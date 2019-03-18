@@ -1,0 +1,19 @@
+#if UNITY_EDITOR
+
+using UnityEngine;
+using UnityEditor;
+using System.Collections;
+using System.Collections.Generic;
+
+public class ClassName : EditorWindow
+{
+    [MenuItem("Custom/ClassName")]
+    static void Init() {
+        EditorWindow.GetWindow<ClassName>(true, "ClassName");
+    }
+
+    void OnGUI() {
+
+    }
+}
+#endif

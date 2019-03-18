@@ -1,0 +1,18 @@
+﻿#pragma kernel CSMain
+
+struct SimpleParticle
+{
+	float3 position;
+	float3 angles;
+	float3 scale;
+	float4 color;
+};
+
+RWStructuredBuffer<SimpleParticle> _TestBuffer;
+
+[numthreads(8,1,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+	uint Id = id.x;
+	_TestBuffer[Id].position.y -= 0.01;
+}
