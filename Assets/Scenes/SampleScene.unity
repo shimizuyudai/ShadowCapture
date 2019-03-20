@@ -702,6 +702,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9760b4f500aa390468fce3e160c6cab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  textureHolder: {fileID: 876038652}
   camera: {fileID: 39614174}
   aspect: {x: 16, y: 9}
 --- !u!4 &1479839566
