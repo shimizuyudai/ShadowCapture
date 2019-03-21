@@ -12,19 +12,21 @@ public class QuadWarpCorrectionController : TextureHolderBase
 
     RenderTexture renderTexture;
     [SerializeField]
-    Vector2 aspect;
+    int resultResolutionX, resultResolutionY;
 
     [SerializeField]
     string settingFileName;
 
     [SerializeField]
-    Color[] pointColors;
+    Color[] pointColors = new Color[] { Color.red, Color.green, Color.blue, Color.yellow};
 
     public Vector3[] Points
     {
         get;
         private set;
     }
+
+    Vector2 aspect;
 
     private bool isControl;
     public bool IsControl
@@ -46,8 +48,25 @@ public class QuadWarpCorrectionController : TextureHolderBase
 
     void Start()
     {
-        resultCamera.targetTexture = renderTexture;
+        
 
+    }
+
+    void Init()
+    {
+        renderTexture = new RenderTexture(resultResolutionX, resultResolutionY,0);
+        aspect = EMath.GetNormalizedShirnkAspect(new Vector2(resultResolutionX, resultResolutionY));
+        resultCamera.targetTexture = renderTexture;
+    }
+
+    void Close()
+    {
+        if (renderTexture != null)
+        {
+            renderTexture.Release();
+            DestroyImmediate(renderTexture);
+            renderTexture = null;
+        }
     }
 
     public void Refresh()

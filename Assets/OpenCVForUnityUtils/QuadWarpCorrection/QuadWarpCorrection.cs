@@ -6,11 +6,21 @@ using OpenCVForUnity.CoreModule;
 using OpenCVForUnity.Calib3dModule;
 using System.Linq;
 
+[RequireComponent(typeof(MeshFilter))]
+[RequireComponent(typeof(MeshRenderer))]
 public class QuadWarpCorrection : MonoBehaviour
 {
     [SerializeField]
     MeshFilter meshFilter;
-
+    [SerializeField]
+    Renderer renderer;
+    public Renderer Renderer
+    {
+        get
+        {
+            return Renderer;
+        }
+    }
     private ControlPoint[] defaultCornerPoints;
     //左上、右上、左下、右下
     public ControlPoint[] CornerPoints
