@@ -38,7 +38,6 @@ public class MatInfo
                 mat.put(r, c, Grid[r, c]);
             }
         }
-        Debug.Log("mat : " + mat.dump());
         return mat;
     }
 

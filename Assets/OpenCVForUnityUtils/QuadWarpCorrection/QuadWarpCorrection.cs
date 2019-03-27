@@ -18,7 +18,7 @@ public class QuadWarpCorrection : MonoBehaviour
     {
         get
         {
-            return Renderer;
+            return renderer;
         }
     }
     private ControlPoint[] defaultCornerPoints;
@@ -27,6 +27,12 @@ public class QuadWarpCorrection : MonoBehaviour
     {
         get;
         private set;
+    }
+
+    private void Reset()
+    {
+        if (meshFilter == null) meshFilter = GetComponent<MeshFilter>();
+        if (renderer == null) renderer = GetComponent<Renderer>();
     }
 
     public ControlPoint[] ControlPoints;

@@ -61,8 +61,7 @@ public class ProcessController
         }
 
         TargetProcess = ProcessUtils.CreateProcess(settings);
-
-
+        
         if (TargetProcess.EnableRaisingEvents)
         {
             TargetProcess.Exited += Process_Exited;

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f27a98f36147ea449c61fab6e7fd6c9, type: 3}
+  m_Name: EasyUISettings
+  m_EditorClassIdentifier: 
+  elementPrefabs:
+  - {fileID: 5641098158045713314, guid: 2c076f998ab6b454c80e4aba0b123f3a, type: 3}
+  - {fileID: 2485924183702302038, guid: 14a11d057cb68c64c8bf015b7d30bb9d, type: 3}
+  - {fileID: 1835732291328105119, guid: 08864576802ca104881d184b9a938eeb, type: 3}

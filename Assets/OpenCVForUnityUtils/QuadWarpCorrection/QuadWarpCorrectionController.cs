@@ -8,7 +8,7 @@ public class QuadWarpCorrectionController : TextureHolderBase
     TextureHolderBase textureHolder;
 
     [SerializeField]
-    Camera controlCamera, resultCamera;
+    Camera captureCamera, resultCamera;
 
     RenderTexture renderTexture;
     [SerializeField]
@@ -20,6 +20,15 @@ public class QuadWarpCorrectionController : TextureHolderBase
     [SerializeField]
     Color[] pointColors = new Color[] { Color.red, Color.green, Color.blue, Color.yellow};
 
+    [SerializeField]
+    Renderer textureHolderView;
+    [SerializeField]
+    QuadWarpCorrection quadWarpCorrection;
+
+    [SerializeField]
+    ParticleSystem ps;
+
+
     public Vector3[] Points
     {
         get;
@@ -27,6 +36,15 @@ public class QuadWarpCorrectionController : TextureHolderBase
     }
 
     Vector2 aspect;
+
+
+    [SerializeField]
+    KeyCode togglekey;
+
+    [SerializeField]
+    Material lineMaterial;
+    [SerializeField]
+    Color lineColor;
 
     private bool isControl;
     public bool IsControl
@@ -48,16 +66,39 @@ public class QuadWarpCorrectionController : TextureHolderBase
 
     void Start()
     {
-        
 
+        Init();
     }
 
-    void Init()
+    void Restore()
     {
-        renderTexture = new RenderTexture(resultResolutionX, resultResolutionY,0);
-        aspect = EMath.GetNormalizedShirnkAspect(new Vector2(resultResolutionX, resultResolutionY));
-        resultCamera.targetTexture = renderTexture;
+
     }
+
+    public void Init()
+    {
+        Close();
+        aspect = EMath.GetNormalizedShirnkAspect(new Vector2(resultResolutionX, resultResolutionY));
+        textureHolderView.transform.localScale = new Vector3(aspect.x, aspect.y, 1f);
+        renderTexture = new RenderTexture(resultResolutionX, resultResolutionY, 0);
+
+        var z = this.transform.position.z - 1f;
+        Points = new Vector3[4];
+        Points[0] = new Vector3(-aspect.x / 2f, aspect.y / 2f, z);
+        Points[1] = new Vector3(aspect.x / 2f, aspect.y / 2f, z);
+        Points[2] = new Vector3(aspect.x / 2f, -aspect.y / 2f, z);
+        Points[3] = new Vector3(-aspect.x / 2f, -aspect.y / 2f, z);
+        var cameras = new Camera[] { captureCamera, resultCamera };
+        foreach (var cam in cameras)
+        {
+            cam.orthographic = true;
+            cam.orthographicSize = aspect.y / 2f;
+        }
+        resultCamera.targetTexture = renderTexture;
+
+        
+    }
+    
 
     void Close()
     {
@@ -76,6 +117,8 @@ public class QuadWarpCorrectionController : TextureHolderBase
 
     void Update()
     {
+        textureHolderView.material.mainTexture = textureHolder.GetTexture();
+        quadWarpCorrection.Renderer.material.mainTexture = textureHolder.GetTexture();
         if (!IsControl) return;
 
 
@@ -87,6 +130,32 @@ public class QuadWarpCorrectionController : TextureHolderBase
     }
     public void OnRenderObject()
     {
+        if (Camera.current == captureCamera)
+        {
+            DrawLine();
+        }
+#if UNITY_EDITOR
+        if (Camera.current == UnityEditor.SceneView.lastActiveSceneView.camera)
+        {
+            DrawLine();
+        }
+#endif
 
+    }
+
+    void DrawLine()
+    {
+        GL.PushMatrix();
+        GL.MultMatrix(transform.localToWorldMatrix);
+        lineMaterial.SetPass(0);
+        GL.Begin(GL.LINE_STRIP);
+        GL.Color(lineColor);
+        for (var i = 0; i < Points.Length; i++)
+        {
+            GL.Vertex(Points[i]);
+        }
+        GL.Vertex(Points[0]);
+        GL.End();
+        GL.PopMatrix();
     }
 }
