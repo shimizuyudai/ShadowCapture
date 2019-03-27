@@ -4,8 +4,18 @@ using UnityEngine;
 
 public class Indicator : MonoBehaviour
 {
-    public float speed;
-    public bool isLoop;
+    public float Speed
+    {
+        get;
+        set;
+    }
+
+    public bool isLoop
+    {
+        get;
+        set;
+    }
+
 
     bool isPlaying;
     bool isForward;
@@ -49,7 +59,7 @@ public class Indicator : MonoBehaviour
         if (!isPlaying) return;
         if (isForward)
         {
-            Value += speed * Time.deltaTime;
+            Value += Speed * Time.deltaTime;
             if (Value >= 1f)
             {
                 Value = Mathf.Clamp(Value, 0f, 1f);
@@ -66,7 +76,7 @@ public class Indicator : MonoBehaviour
         }
         else
         {
-            Value -= speed * Time.deltaTime;
+            Value -= Speed * Time.deltaTime;
             if (Value <= 0f)
             {
                 Value = Mathf.Clamp(Value, 0f, 1f);

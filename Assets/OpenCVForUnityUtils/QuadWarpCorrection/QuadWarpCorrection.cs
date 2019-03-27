@@ -65,7 +65,7 @@ public class QuadWarpCorrection : MonoBehaviour
         public Vector2 uv;
     }
 
-    public void Init(Mesh mesh)
+    private void Init(Mesh mesh)
     {
         this.meshFilter.mesh = mesh;
         mesh.RecalculateNormals();

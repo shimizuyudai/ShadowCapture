@@ -53,7 +53,7 @@ public class OrthoCameraController : MonoBehaviour
         {
             Reset();
         }
-        if (Input.GetKey(keyCode))
+        if (Input.GetKey(keyCode) || keyCode == KeyCode.None)
         {
             ChangeSize();
             Move();
