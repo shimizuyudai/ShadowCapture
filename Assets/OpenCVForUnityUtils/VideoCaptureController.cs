@@ -165,7 +165,6 @@ public partial class VideoCaptureController : TextureHolderBase
         BGRMat = new Mat();
         RGBMat = new Mat();
         capture = new VideoCapture();
-        print(Videoio.CAP_OPENCV_MJPEG);
         capture.open(0, Videoio.CAP_DSHOW);
         if (!capture.isOpened())
         {
@@ -175,7 +174,7 @@ public partial class VideoCaptureController : TextureHolderBase
         
 
         Setup();
-        print("backend : " + capture.getBackendName());
+        //print("backend : " + capture.getBackendName());
         //capture.set(Videoio.CAP_PROP_FORMAT, );
         Debug.Log("CAP_PROP_FORMAT: " + capture.get(Videoio.CAP_PROP_FORMAT));
         //Debug.Log("CAP_PROP_POS_MSEC: " + capture.get(Videoio.CAP_PROP_POS_MSEC));

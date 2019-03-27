@@ -89,6 +89,8 @@ public class QuadWarpCorrectionController : TextureHolderBase
     {
         Close();
         aspect = EMath.GetNormalizedShirnkAspect(new Vector2(resultResolutionX, resultResolutionY));
+        aspect = new Vector2(resultResolutionX, resultResolutionY).normalized;
+        print(EMath.GetNormalizedExpandAspect(new Vector2(resultResolutionX, resultResolutionY)));
         textureHolderView.transform.localScale = new Vector3(aspect.x, aspect.y, 1f);
         renderTexture = new RenderTexture(resultResolutionX, resultResolutionY, 0);
 
@@ -124,7 +126,24 @@ public class QuadWarpCorrectionController : TextureHolderBase
 
     public void Correct()
     {
-        quadWarpCorrection.Init();
+        var piList = new List<QuadWarpCorrection.PointInfomation>();
+        for (var i = 0; i < Points.Length; i++)
+        {
+            var p = Points[i];
+            var uv = new Vector2(
+                EMath.Map(p.x, -aspect.x / 2f, aspect.x / 2f, 0, 1),
+                EMath.Map(p.y, -aspect.y / 2f, aspect.y / 2f, 0, 1)
+                );
+            var pi = new QuadWarpCorrection.PointInfomation
+            {
+                position = p,
+                uv = uv
+            };
+            piList.Add(pi);
+        }
+        quadWarpCorrection.Init(piList[0], piList[1],piList[2],piList[3], 20,20);
+        quadWarpCorrection.Refresh(new Vector2(-aspect.x / 2, aspect.y / 2), aspect/2,
+            new Vector2(aspect.x / 2, -aspect.y / 2), -aspect/2);
     }
 
     void Update()
@@ -134,6 +153,11 @@ public class QuadWarpCorrectionController : TextureHolderBase
         if (Input.GetKeyDown(togglekey))
         {
             IsControl = !IsControl;
+        }
+
+        if (Input.GetKeyDown(correctionKey))
+        {
+            Correct();
         }
         
         if (ps.particleCount > 0) ps.Clear();
