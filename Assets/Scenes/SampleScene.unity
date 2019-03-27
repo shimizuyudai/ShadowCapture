@@ -892,7 +892,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c5e9ef1b18599c4bac6d2adb523d6c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fileName: intrinsic2.json
+  fileName: intrinsic.json
   videoCaptureController: {fileID: 1872901416}
 --- !u!4 &876038653
 Transform:
@@ -1032,9 +1032,9 @@ MonoBehaviour:
   videoCaptureController: {fileID: 1872901416}
   segmentX: 4
   segmentY: 7
-  captureKey: 13
-  saveKey: 32
-  fileName: intrinsic2.json
+  captureKey: 99
+  saveKey: 115
+  fileName: intrinsic.json
 --- !u!4 &1124805756
 Transform:
   m_ObjectHideFlags: 0

@@ -32,15 +32,6 @@ public class VideoImageUndisotorter : TextureHolderBase
         var info = IOHandler.LoadJson<IntrinsicInfo>(IOHandler.IntoStreamingAssets(fileName));
         this.distCoeffs = info.distCoeffs.ToMat();
         this.cameraMatrix = info.cameraMatrix.ToMat();
-        print("cols : " + cameraMatrix.cols());
-        for (var r = 0; r < distCoeffs.rows(); r++)
-        {
-            for (var c = 0; c < distCoeffs.cols(); c++)
-            {
-                //double[] v;
-                print("r : " + r + ", c : " + c + " : " + distCoeffs.get(r,c)[0]);
-            }
-        }
     }
 
     // Start is called before the first frame update
@@ -59,6 +50,11 @@ public class VideoImageUndisotorter : TextureHolderBase
     private void VideoCaptureController_ChangeTextureEvent(Texture texture)
     {
         rgbMat = new Mat(texture.height, texture.width, CvType.CV_8UC3);
+        if (this.texture != null)
+        {
+            DestroyImmediate(this.texture);
+            this.texture = null;
+        }
         this.texture = new Texture2D(texture.width,texture.height,TextureFormat.RGB24,false);
         print(cameraMatrix);
         print(distCoeffs);

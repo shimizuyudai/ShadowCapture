@@ -292,4 +292,3 @@ public class VideoCaptureSettings
     public bool IsControlHue;
     public bool IsControlSaturation;
 }
-
