@@ -152,7 +152,7 @@ public class QuadWarpCorrectionController : TextureHolderBase
         quadWarpCorrection.Renderer.material.mainTexture = textureHolder.GetTexture();
         if (Input.GetKeyDown(togglekey))
         {
-            IsControl = !IsControl;
+            ToggleControl();
         }
 
         if (Input.GetKeyDown(correctionKey))
@@ -164,6 +164,11 @@ public class QuadWarpCorrectionController : TextureHolderBase
         if (!IsControl) return;
         ControlPoints();
         DrawPoints();
+    }
+
+    public void ToggleControl()
+    {
+        IsControl = !IsControl;
     }
 
     void ControlPoints()
