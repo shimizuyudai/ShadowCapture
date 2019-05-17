@@ -155,7 +155,7 @@ public partial class VideoCaptureController : TextureHolderBase
             Imgproc.cvtColor(BGRMat, RGBMat, Imgproc.COLOR_BGR2RGB);
             Utils.fastMatToTexture2D(RGBMat, texture);
             shouldUpdateVideoFrame = false;
-            //print(CvType.typeToString(rgbMat.type()));
+            RefreshTexture();
         }
     }
 

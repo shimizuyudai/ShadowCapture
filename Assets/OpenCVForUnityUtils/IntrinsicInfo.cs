@@ -4,6 +4,7 @@ using UnityEngine;
 using OpenCVForUnity;
 using OpenCVForUnity.CoreModule;
 
+//カメラの内部パラメータ
 public class IntrinsicInfo
 {
     public List<MatInfo> rvecs, tvecs;

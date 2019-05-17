@@ -42,11 +42,28 @@ public class VideoImageUndisotorter : TextureHolderBase
         newCameraMatrix = new Mat();
         LoadSettings();
         videoCaptureController.ChangeTextureEvent += VideoCaptureController_ChangeTextureEvent;
+        videoCaptureController.RefreshTextureEvent += VideoCaptureController_RefreshTextureEvent;
         
     }
 
-    bool t;
+    private void VideoCaptureController_RefreshTextureEvent()
+    {
+        //Calib3d.undistort(videoCaptureController.RGBMat, rgbMat, cameraMatrix, distCoeffs, newCameraMatrix);
+        Imgproc.remap(videoCaptureController.RGBMat, rgbMat, mapX, mapY, Imgproc.INTER_LINEAR);
+        Core.flip(rgbMat, rgbMat, 0);
+        Utils.fastMatToTexture2D(rgbMat, texture);
+    }
 
+    private void OnDestroy()
+    {
+        mapX.Dispose();
+        mapY.Dispose();
+    }
+
+    /// <summary>
+    /// 補正対象のテクスチャが初期化された際に補正用の設定を初期化する
+    /// </summary>
+    /// <param name="texture"></param>
     private void VideoCaptureController_ChangeTextureEvent(Texture texture)
     {
         rgbMat = new Mat(texture.height, texture.width, CvType.CV_8UC3);
@@ -56,32 +73,11 @@ public class VideoImageUndisotorter : TextureHolderBase
             this.texture = null;
         }
         this.texture = new Texture2D(texture.width,texture.height,TextureFormat.RGB24,false);
-        print(cameraMatrix);
-        print(distCoeffs);
-        print(videoCaptureController.RGBMat.size());
+        //print(cameraMatrix);
+        //print(distCoeffs);
+        //print(videoCaptureController.RGBMat.size());
 
         newCameraMatrix = Calib3d.getOptimalNewCameraMatrix(cameraMatrix, distCoeffs, videoCaptureController.RGBMat.size(), 0, videoCaptureController.RGBMat.size());
         Calib3d.initUndistortRectifyMap(this.cameraMatrix, this.distCoeffs, new Mat(), newCameraMatrix, videoCaptureController.RGBMat.size(), CvType.CV_32FC1, mapX, mapY);
-    }
-
-    void Init(int alpha)
-    {
-       
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        Calib3d.undistort(videoCaptureController.RGBMat, rgbMat, cameraMatrix, distCoeffs, newCameraMatrix);
-        //Imgproc.remap(videoCaptureController.RGBMat, rgbMat, mapX, mapY, Imgproc.INTER_LINEAR);
-        Core.flip(rgbMat, rgbMat, 0);
-        Utils.fastMatToTexture2D(rgbMat, texture);
-
-        
-        if (Input.GetKeyDown("r"))
-        {
-            t = !t;
-            Init(t ? 1 : 0);
-        }
     }
 }

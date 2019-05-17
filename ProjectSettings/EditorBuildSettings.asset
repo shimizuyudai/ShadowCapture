@@ -8,4 +8,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: b75ec4b3798d3e549bebf5c850e9c4c6
+  - enabled: 1
+    path: Assets/Scenes/Calibration.unity
+    guid: 17d8d977419172544895f7cdccc713c3
+  - enabled: 1
+    path: Assets/Scenes/UndistortedPreview.unity
+    guid: a19413902371e6c448515573e78caa86
   m_configObjects: {}

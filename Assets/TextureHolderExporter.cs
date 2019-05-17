@@ -24,12 +24,12 @@ public class TextureHolderExporter : MonoBehaviour
     [SerializeField]
     KeyCode exportKey;
 
-    private void Awake()
+    private void Reset()
     {
-        textureHolder.ChangeTextureEvent += TextureHolder_ChangeTextureEvent;
+        this.textureUtilBehaviour = GetComponent<TextureUtilBehaviour>();
     }
 
-    private void TextureHolder_ChangeTextureEvent(Texture texture)
+    private void SecureTextures(Texture texture)
     {
         textureUtilBehaviour.SecureTexture(texture, this.texture);
         textureUtilBehaviour.SecureTexture(texture, this.renderTexture);
@@ -45,6 +45,7 @@ public class TextureHolderExporter : MonoBehaviour
 
     public void Export()
     {
+        SecureTextures(textureHolder.GetTexture());
         var name = (string.IsNullOrEmpty(prefix) ? string.Empty : prefix + "_") + (useDateTime ? TypeUtils.Format.DateTime2String(DateTime.Now) : string.Empty);
         if (string.IsNullOrEmpty(name))
         {
