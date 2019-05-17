@@ -43,7 +43,6 @@ public class VideoImageUndisotorter : TextureHolderBase
         LoadSettings();
         videoCaptureController.ChangeTextureEvent += VideoCaptureController_ChangeTextureEvent;
         videoCaptureController.RefreshTextureEvent += VideoCaptureController_RefreshTextureEvent;
-        
     }
 
     private void VideoCaptureController_RefreshTextureEvent()
@@ -56,8 +55,20 @@ public class VideoImageUndisotorter : TextureHolderBase
 
     private void OnDestroy()
     {
+        Clear();
         mapX.Dispose();
         mapY.Dispose();
+    }
+    private void Clear()
+    {
+        if (this.distCoeffs != null)
+        {
+            this.distCoeffs.Dispose();
+        }
+        if (this.cameraMatrix != null)
+        {
+            this.cameraMatrix.Dispose();
+        }
     }
 
     /// <summary>
@@ -69,14 +80,30 @@ public class VideoImageUndisotorter : TextureHolderBase
         rgbMat = new Mat(texture.height, texture.width, CvType.CV_8UC3);
         if (this.texture != null)
         {
-            DestroyImmediate(this.texture);
-            this.texture = null;
+            if (this.texture.width != texture.width || this.texture.height != texture.height)
+            {
+                DestroyImmediate(this.texture);
+                this.texture = null;
+            }
         }
-        this.texture = new Texture2D(texture.width,texture.height,TextureFormat.RGB24,false);
+        if (this.texture == null)
+        {
+            this.texture = new Texture2D(texture.width, texture.height, TextureFormat.RGB24, false);
+        }
+        
         //print(cameraMatrix);
         //print(distCoeffs);
         //print(videoCaptureController.RGBMat.size());
 
+        newCameraMatrix = Calib3d.getOptimalNewCameraMatrix(cameraMatrix, distCoeffs, videoCaptureController.RGBMat.size(), 0, videoCaptureController.RGBMat.size());
+        Calib3d.initUndistortRectifyMap(this.cameraMatrix, this.distCoeffs, new Mat(), newCameraMatrix, videoCaptureController.RGBMat.size(), CvType.CV_32FC1, mapX, mapY);
+    }
+
+    public void OnUpdateIntrinsic(Mat cameraMatrix, Mat distCoeffs)
+    {
+        Clear();
+        this.cameraMatrix = cameraMatrix;
+        this.distCoeffs = distCoeffs;
         newCameraMatrix = Calib3d.getOptimalNewCameraMatrix(cameraMatrix, distCoeffs, videoCaptureController.RGBMat.size(), 0, videoCaptureController.RGBMat.size());
         Calib3d.initUndistortRectifyMap(this.cameraMatrix, this.distCoeffs, new Mat(), newCameraMatrix, videoCaptureController.RGBMat.size(), CvType.CV_32FC1, mapX, mapY);
     }
