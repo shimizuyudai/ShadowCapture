@@ -546,11 +546,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1419526032}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4dd4597582e27c54eb676b7e6dc5c8aa, type: 3}
+  m_Script: {fileID: 11500000, guid: 2e6f333dff298984a9d76bdb1b93c86c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fileName: 
-  videoCaptureController: {fileID: 0}
+  camera: {fileID: 482868550}
+  videoCaptureController: {fileID: 1872901416}
 --- !u!114 &1872901416 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8511956679513598320, guid: 3a7b644f9796d67449b3bc87efd773a1,
@@ -629,6 +629,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7233839972362148645, guid: 46b0e1b7d768250448f8d72a2f64d839,
+        type: 3}
+      propertyPath: keySceneInfos.Array.data[4].KeyCode
+      value: 116
+      objectReference: {fileID: 0}
+    - target: {fileID: 7233839972362148645, guid: 46b0e1b7d768250448f8d72a2f64d839,
+        type: 3}
+      propertyPath: keySceneInfos.Array.data[5].KeyCode
+      value: 121
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46b0e1b7d768250448f8d72a2f64d839, type: 3}

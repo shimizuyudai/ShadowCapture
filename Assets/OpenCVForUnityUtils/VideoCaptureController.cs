@@ -146,6 +146,12 @@ public partial class VideoCaptureController : TextureHolderBase
     // Update is called once per frame
     void Update()
     {
+        Refresh();
+    }
+
+
+    private void Refresh()
+    {
         if (capture == null) return;
         if (!capture.isOpened()) return;
         if (!shouldUpdateVideoFrame) return;
@@ -162,13 +168,20 @@ public partial class VideoCaptureController : TextureHolderBase
     private void Initialize()
     {
         Close();
+
+        videoCaptureSettings = LoadSetting();
+        if(videoCaptureSettings == null)
+        {
+            Debug.LogError("Missing Setting File : " + IOHandler.IntoStreamingAssets(settingsFileName));
+            return;
+        }
         BGRMat = new Mat();
         RGBMat = new Mat();
         capture = new VideoCapture();
-        capture.open(0, Videoio.CAP_DSHOW);
+        capture.open(videoCaptureSettings.DeviceId, Videoio.CAP_DSHOW);
         if (!capture.isOpened())
         {
-            Debug.LogError("Error");
+            Debug.LogError("Missing Webcam");
             return;
         }
         
@@ -198,6 +211,7 @@ public partial class VideoCaptureController : TextureHolderBase
         print(frameWidth);
         print(frameHeight);
         texture = new Texture2D(frameWidth, frameHeight, TextureFormat.RGB24, false);
+        Refresh();
         this.SetTexture(texture);
         waitFrameCoroutine = WaitFrameRoutine();
         StartCoroutine(waitFrameCoroutine);
@@ -254,7 +268,10 @@ public partial class VideoCaptureController : TextureHolderBase
         }
     }
 
-
+    VideoCaptureSettings LoadSetting()
+    {
+        return IOHandler.LoadJson<VideoCaptureSettings>(IOHandler.IntoStreamingAssets(settingsFileName));
+    }
 
 
     [ContextMenu("ExportSettingsFile")]

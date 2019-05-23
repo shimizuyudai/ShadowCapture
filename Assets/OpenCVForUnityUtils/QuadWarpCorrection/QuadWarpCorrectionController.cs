@@ -2,31 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class QuadWarpCorrectionController : TextureHolderBase
+public class QuadWarpCorrectionController : MonoBehaviour
 {
     [SerializeField]
-    KeyCode togglekey, correctionKey, controlKey;
+    KeyCode correctionKey, controlKey, clearKey;
 
     [SerializeField]
     TextureHolderBase textureHolder;
 
     [SerializeField]
-    Camera captureCamera, resultCamera;
-
-    RenderTexture renderTexture;
+    Camera captureCamera;
     [SerializeField]
-    int resultResolutionX, resultResolutionY;
+    Vector2 resultSize;
 
     [SerializeField]
     string settingFileName;
 
     [SerializeField]
     Color[] pointColors = new Color[] { Color.red, Color.green, Color.blue, Color.yellow };
-
-    [SerializeField]
-    Renderer textureHolderView;
-    [SerializeField]
-    QuadWarpCorrection quadWarpCorrection;
 
     [SerializeField]
     ParticleSystem ps;
@@ -45,39 +38,24 @@ public class QuadWarpCorrectionController : TextureHolderBase
         private set;
     }
 
-    Vector2 aspect;
-
-    int controlPointIndex = -1;
-
-    Vector3 preWorldMousePosition;
-
-    private bool isControl;
-    public bool IsControl
-    {
-        get
-        {
-            return isControl;
-        }
-        set
-        {
-            isControl = value;
-        }
-    }
-
-    public override Texture GetTexture()
-    {
-        return renderTexture;
-    }
+    private Vector2 aspect;
+    private int controlPointIndex = -1;
+    private Vector3 preWorldMousePosition;
 
     private void Awake()
     {
+        textureHolder.ChangeTextureEvent += TextureHolder_ChangeTextureEvent;
         ps.Stop();
+    }
+
+    private void TextureHolder_ChangeTextureEvent(Texture texture)
+    {
+        Init(new Vector2(texture.width, texture.height));
     }
 
     void Start()
     {
 
-        Init();
     }
 
     void Restore()
@@ -85,15 +63,11 @@ public class QuadWarpCorrectionController : TextureHolderBase
 
     }
 
-    public void Init()
+    public void Init(Vector2 size)
     {
         Close();
-        aspect = EMath.GetNormalizedShirnkAspect(new Vector2(resultResolutionX, resultResolutionY));
-        aspect = new Vector2(resultResolutionX, resultResolutionY).normalized;
-        print(EMath.GetNormalizedExpandAspect(new Vector2(resultResolutionX, resultResolutionY)));
-        textureHolderView.transform.localScale = new Vector3(aspect.x, aspect.y, 1f);
-        renderTexture = new RenderTexture(resultResolutionX, resultResolutionY, 0);
-
+        var h = captureCamera.orthographicSize * 2f;
+        aspect = EMath.GetShrinkFitSize(resultSize, new Vector2(h*captureCamera.aspect, h));
         var z = this.transform.position.z - 1f;
         Points = new Vector3[4];
         Points[0] = new Vector3(-aspect.x / 2f, aspect.y / 2f, z);
@@ -104,29 +78,31 @@ public class QuadWarpCorrectionController : TextureHolderBase
         {
             Points[i] *= 0.75f;
         }
-        var cameras = new Camera[] { captureCamera, resultCamera };
-        foreach (var cam in cameras)
+        Restore();
+    }
+
+    public void Clear()
+    {
+        Points = new Vector3[4];
+        var z = this.transform.position.z - 1f;
+        Points[0] = new Vector3(-aspect.x / 2f, aspect.y / 2f, z);
+        Points[1] = new Vector3(aspect.x / 2f, aspect.y / 2f, z);
+        Points[2] = new Vector3(aspect.x / 2f, -aspect.y / 2f, z);
+        Points[3] = new Vector3(-aspect.x / 2f, -aspect.y / 2f, z);
+        for (var i = 0; i < Points.Length; i++)
         {
-            cam.orthographic = true;
-            cam.orthographicSize = aspect.y / 2f;
+            Points[i] *= 0.75f;
         }
-        resultCamera.targetTexture = renderTexture;
     }
 
 
     void Close()
     {
-        if (renderTexture != null)
-        {
-            renderTexture.Release();
-            DestroyImmediate(renderTexture);
-            renderTexture = null;
-        }
     }
 
     public void Correct()
     {
-        var piList = new List<QuadWarpCorrection.PointInfomation>();
+        var piList = new List<CorrectableQuad.PointInfomation>();
         for (var i = 0; i < Points.Length; i++)
         {
             var p = Points[i];
@@ -134,41 +110,32 @@ public class QuadWarpCorrectionController : TextureHolderBase
                 EMath.Map(p.x, -aspect.x / 2f, aspect.x / 2f, 0, 1),
                 EMath.Map(p.y, -aspect.y / 2f, aspect.y / 2f, 0, 1)
                 );
-            var pi = new QuadWarpCorrection.PointInfomation
+            var pi = new CorrectableQuad.PointInfomation
             {
                 position = p,
                 uv = uv
             };
             piList.Add(pi);
         }
-        quadWarpCorrection.Init(piList[0], piList[1],piList[2],piList[3], 20,20);
-        quadWarpCorrection.Refresh(new Vector2(-aspect.x / 2, aspect.y / 2), aspect/2,
-            new Vector2(aspect.x / 2, -aspect.y / 2), -aspect/2);
+
+        var setting = new QuadCorrectionSetting();
+        setting.LeftTop = new CorrectableQuad.JPointInfomation(piList[0]);
+        setting.RightTop = new CorrectableQuad.JPointInfomation(piList[1]);
+        setting.RightBottom = new CorrectableQuad.JPointInfomation(piList[2]);
+        setting.LeftBottom = new CorrectableQuad.JPointInfomation(piList[3]);
+        setting.Size = new TypeUtils.Json.Vec2(resultSize);
     }
 
     void Update()
     {
-        textureHolderView.material.mainTexture = textureHolder.GetTexture();
-        quadWarpCorrection.Renderer.material.mainTexture = textureHolder.GetTexture();
-        if (Input.GetKeyDown(togglekey))
-        {
-            ToggleControl();
-        }
-
         if (Input.GetKeyDown(correctionKey))
         {
             Correct();
         }
-        
+
         if (ps.particleCount > 0) ps.Clear();
-        if (!IsControl) return;
         ControlPoints();
         DrawPoints();
-    }
-
-    public void ToggleControl()
-    {
-        IsControl = !IsControl;
     }
 
     void ControlPoints()
@@ -215,13 +182,14 @@ public class QuadWarpCorrectionController : TextureHolderBase
         return -1;
     }
 
-    public void Save()
-    {
+    
 
+    public void Save(QuadCorrectionSetting setting)
+    {
+        IOHandler.SaveJson(IOHandler.IntoStreamingAssets(settingFileName), setting);
     }
     public void OnRenderObject()
     {
-        if (!IsControl) return;
         if (Camera.current == captureCamera)
         {
             DrawLines();
@@ -263,6 +231,5 @@ public class QuadWarpCorrectionController : TextureHolderBase
             particles.Add(particle);
         }
         ps.SetParticles(particles.ToArray(), particles.Count);
-        print("draw points");
     }
 }

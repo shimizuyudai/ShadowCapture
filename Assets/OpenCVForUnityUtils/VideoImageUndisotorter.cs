@@ -48,6 +48,11 @@ public class VideoImageUndisotorter : TextureHolderBase
     private void VideoCaptureController_RefreshTextureEvent()
     {
         //Calib3d.undistort(videoCaptureController.RGBMat, rgbMat, cameraMatrix, distCoeffs, newCameraMatrix);
+        Refresh();
+    }
+
+    private void Refresh()
+    {
         Imgproc.remap(videoCaptureController.RGBMat, rgbMat, mapX, mapY, Imgproc.INTER_LINEAR);
         Core.flip(rgbMat, rgbMat, 0);
         Utils.fastMatToTexture2D(rgbMat, texture);
@@ -90,13 +95,10 @@ public class VideoImageUndisotorter : TextureHolderBase
         {
             this.texture = new Texture2D(texture.width, texture.height, TextureFormat.RGB24, false);
         }
-        
-        //print(cameraMatrix);
-        //print(distCoeffs);
-        //print(videoCaptureController.RGBMat.size());
 
         newCameraMatrix = Calib3d.getOptimalNewCameraMatrix(cameraMatrix, distCoeffs, videoCaptureController.RGBMat.size(), 0, videoCaptureController.RGBMat.size());
         Calib3d.initUndistortRectifyMap(this.cameraMatrix, this.distCoeffs, new Mat(), newCameraMatrix, videoCaptureController.RGBMat.size(), CvType.CV_32FC1, mapX, mapY);
+        SetTexture(GetTexture());
     }
 
     public void OnUpdateIntrinsic(Mat cameraMatrix, Mat distCoeffs)

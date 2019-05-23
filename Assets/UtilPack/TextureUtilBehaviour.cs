@@ -48,7 +48,6 @@ public class TextureUtilBehaviour : MonoBehaviour
     {
         texture2D = SecureTexture(texture, texture2D);
         renderTexture = SecureTexture(texture, renderTexture);
-        print(texture2D);
         TextureUtils.Texture2Texture2D(texture, texture2D, renderTexture);
         switch (imageType)
         {

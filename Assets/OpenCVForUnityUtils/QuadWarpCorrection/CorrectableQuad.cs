@@ -5,10 +5,11 @@ using OpenCVForUnity;
 using OpenCVForUnity.CoreModule;
 using OpenCVForUnity.Calib3dModule;
 using System.Linq;
+using UtilPack4Unity;
 
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
-public class QuadWarpCorrection : MonoBehaviour
+public class CorrectableQuad : MonoBehaviour
 {
     [SerializeField]
     MeshFilter meshFilter;
@@ -34,8 +35,6 @@ public class QuadWarpCorrection : MonoBehaviour
         if (meshFilter == null) meshFilter = GetComponent<MeshFilter>();
         if (renderer == null) renderer = GetComponent<Renderer>();
     }
-
-    public ControlPoint[] ControlPoints;
 
     private Vector3[] defaultVertices;
 
@@ -63,6 +62,18 @@ public class QuadWarpCorrection : MonoBehaviour
     {
         public Vector3 position;
         public Vector2 uv;
+    }
+
+    public class JPointInfomation
+    {
+        public TypeUtils.Json.Vec3 position;
+        public TypeUtils.Json.Vec2 uv;
+
+        public JPointInfomation(PointInfomation pointInfomation)
+        {
+            this.position = new TypeUtils.Json.Vec3(pointInfomation.position);
+            this.uv = new TypeUtils.Json.Vec2(pointInfomation.uv);
+        }
     }
 
     private void Init(Mesh mesh)
@@ -112,16 +123,7 @@ public class QuadWarpCorrection : MonoBehaviour
             new ControlPoint (2, rb),
             new ControlPoint (3, lb)
         };
-
-
-        ControlPoints = new ControlPoint[] {
-            new ControlPoint(0, lt),
-            new ControlPoint(1, rt),
-            new ControlPoint(2, rb),
-            new ControlPoint(3, lb),
-            new ControlPoint(4, center)
-        };
-
+        
         defaultCornerPoints = new ControlPoint[] {
             new ControlPoint (0, lt),
             new ControlPoint (1, rt),

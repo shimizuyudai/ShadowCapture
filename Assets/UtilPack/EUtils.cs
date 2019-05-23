@@ -244,6 +244,20 @@ public static class EUtils
         }
     }
 
+    public static class ColorUtils
+    {
+        public static Color[] GetGradationHueColors(int num, float saturation, float brightness)
+        {
+            var colors = new Color[num];
+            for (var i = 0; i < num; i++)
+            {
+                var hue = (float)i / num;
+                colors[i] = Color.HSVToRGB(hue, saturation, brightness);
+            }
+            return colors;
+        }
+    }
+
 
 
     public static class Music

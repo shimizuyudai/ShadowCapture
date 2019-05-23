@@ -45,10 +45,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   keySceneInfos:
   - KeyCode: 113
-    SceneName: 
+    SceneName: Main
   - KeyCode: 119
     SceneName: Calibration
   - KeyCode: 101
     SceneName: UndistortedPreview
   - KeyCode: 114
-    SceneName: 
+    SceneName: Trim
+  - KeyCode: 114
+    SceneName: TrimmedPreview
+  - KeyCode: 116
+    SceneName: Capture

@@ -3,17 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UtilPack4Unity;
 
-public class VideoCaptureViewQuad : MonoBehaviour
+[RequireComponent(typeof(Renderer))]
+public class TextureHolderViewQuadFitter : MonoBehaviour
 {
     [SerializeField]
     Camera camera;
     [SerializeField]
-    VideoCaptureController videoCaptureController;
+    TextureHolderBase textureHolder;
+    Renderer renderer;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        videoCaptureController.ChangeTextureEvent += VideoCaptureController_ChangeTextureEvent;
+        renderer = GetComponent<Renderer>();
+        textureHolder.ChangeTextureEvent += VideoCaptureController_ChangeTextureEvent;
     }
 
     private void VideoCaptureController_ChangeTextureEvent(Texture texture)
@@ -21,5 +24,6 @@ public class VideoCaptureViewQuad : MonoBehaviour
         var frameSize = new Vector2(camera.orthographicSize * 2 * camera.aspect, camera.orthographicSize * 2);
         var size = EMath.GetShrinkFitSize(new Vector2(texture.width, texture.height), frameSize);
         this.transform.localScale = new Vector3(size.x, size.y, 1f);
+        renderer.material.mainTexture = textureHolder.GetTexture();
     }
 }
