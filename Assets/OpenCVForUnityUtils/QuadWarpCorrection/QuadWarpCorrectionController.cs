@@ -1,19 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using UtilPack4Unity;
 
 public class QuadWarpCorrectionController : MonoBehaviour
 {
     [SerializeField]
-    KeyCode correctionKey, controlKey, clearKey;
+    KeyCode saveKey, controlKey, clearKey;
 
     [SerializeField]
     TextureHolderBase textureHolder;
 
     [SerializeField]
     Camera captureCamera;
-    [SerializeField]
-    Vector2 resultSize;
 
     [SerializeField]
     string settingFileName;
@@ -42,8 +42,12 @@ public class QuadWarpCorrectionController : MonoBehaviour
     private int controlPointIndex = -1;
     private Vector3 preWorldMousePosition;
 
+    public event Action<QuadCorrectionSetting> CorrectEvent;
+
+
     private void Awake()
     {
+        aspect = Vector2.one;
         textureHolder.ChangeTextureEvent += TextureHolder_ChangeTextureEvent;
         ps.Stop();
     }
@@ -53,23 +57,18 @@ public class QuadWarpCorrectionController : MonoBehaviour
         Init(new Vector2(texture.width, texture.height));
     }
 
-    void Start()
-    {
-
-    }
-
-    void Restore()
-    {
-
-    }
-
     public void Init(Vector2 size)
     {
-        Close();
         var h = captureCamera.orthographicSize * 2f;
-        aspect = EMath.GetShrinkFitSize(resultSize, new Vector2(h*captureCamera.aspect, h));
-        var z = this.transform.position.z - 1f;
+        aspect = EMath.GetShrinkFitSize(size, new Vector2(h*captureCamera.aspect, h));
+        InitPoints();
+        Restore();
+    }
+
+    public void InitPoints()
+    {
         Points = new Vector3[4];
+        var z = this.transform.position.z - 1f;
         Points[0] = new Vector3(-aspect.x / 2f, aspect.y / 2f, z);
         Points[1] = new Vector3(aspect.x / 2f, aspect.y / 2f, z);
         Points[2] = new Vector3(aspect.x / 2f, -aspect.y / 2f, z);
@@ -78,59 +77,32 @@ public class QuadWarpCorrectionController : MonoBehaviour
         {
             Points[i] *= 0.75f;
         }
-        Restore();
+    }
+
+    private void Restore()
+    {
+        var setting = IOHandler.LoadJson<QuadCorrectionSetting>(IOHandler.IntoStreamingAssets(settingFileName));
+        Points[0] = setting.LeftTop.position.ToVector3();
+        Points[1] = setting.RightTop.position.ToVector3();
+        Points[2] = setting.RightBottom.position.ToVector3();
+        Points[3] = setting.LeftBottom.position.ToVector3();
     }
 
     public void Clear()
     {
-        Points = new Vector3[4];
-        var z = this.transform.position.z - 1f;
-        Points[0] = new Vector3(-aspect.x / 2f, aspect.y / 2f, z);
-        Points[1] = new Vector3(aspect.x / 2f, aspect.y / 2f, z);
-        Points[2] = new Vector3(aspect.x / 2f, -aspect.y / 2f, z);
-        Points[3] = new Vector3(-aspect.x / 2f, -aspect.y / 2f, z);
-        for (var i = 0; i < Points.Length; i++)
-        {
-            Points[i] *= 0.75f;
-        }
-    }
-
-
-    void Close()
-    {
-    }
-
-    public void Correct()
-    {
-        var piList = new List<CorrectableQuad.PointInfomation>();
-        for (var i = 0; i < Points.Length; i++)
-        {
-            var p = Points[i];
-            var uv = new Vector2(
-                EMath.Map(p.x, -aspect.x / 2f, aspect.x / 2f, 0, 1),
-                EMath.Map(p.y, -aspect.y / 2f, aspect.y / 2f, 0, 1)
-                );
-            var pi = new CorrectableQuad.PointInfomation
-            {
-                position = p,
-                uv = uv
-            };
-            piList.Add(pi);
-        }
-
-        var setting = new QuadCorrectionSetting();
-        setting.LeftTop = new CorrectableQuad.JPointInfomation(piList[0]);
-        setting.RightTop = new CorrectableQuad.JPointInfomation(piList[1]);
-        setting.RightBottom = new CorrectableQuad.JPointInfomation(piList[2]);
-        setting.LeftBottom = new CorrectableQuad.JPointInfomation(piList[3]);
-        setting.Size = new TypeUtils.Json.Vec2(resultSize);
+        InitPoints();
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(correctionKey))
+        if (Input.GetKeyDown(saveKey))
         {
-            Correct();
+            Save();
+        }
+
+        if (Input.GetKeyDown(clearKey))
+        {
+            Clear();
         }
 
         if (ps.particleCount > 0) ps.Clear();
@@ -184,8 +156,30 @@ public class QuadWarpCorrectionController : MonoBehaviour
 
     
 
-    public void Save(QuadCorrectionSetting setting)
+    public void Save()
     {
+        var piList = new List<CorrectableQuad.PointInfomation>();
+        for (var i = 0; i < Points.Length; i++)
+        {
+            var p = Points[i];
+            var uv = new Vector2(
+                EMath.Map(p.x, -aspect.x / 2f, aspect.x / 2f, 0, 1),
+                EMath.Map(p.y, -aspect.y / 2f, aspect.y / 2f, 0, 1)
+                );
+            var pi = new CorrectableQuad.PointInfomation
+            {
+                position = p,
+                uv = uv
+            };
+            piList.Add(pi);
+        }
+
+        var setting = new QuadCorrectionSetting();
+        setting.LeftTop = new CorrectableQuad.JPointInfomation(piList[0]);
+        setting.RightTop = new CorrectableQuad.JPointInfomation(piList[1]);
+        setting.RightBottom = new CorrectableQuad.JPointInfomation(piList[2]);
+        setting.LeftBottom = new CorrectableQuad.JPointInfomation(piList[3]);
+        CorrectEvent?.Invoke(setting);
         IOHandler.SaveJson(IOHandler.IntoStreamingAssets(settingFileName), setting);
     }
     public void OnRenderObject()

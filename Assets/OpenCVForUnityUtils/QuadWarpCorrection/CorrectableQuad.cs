@@ -66,13 +66,24 @@ public class CorrectableQuad : MonoBehaviour
 
     public class JPointInfomation
     {
-        public TypeUtils.Json.Vec3 position;
-        public TypeUtils.Json.Vec2 uv;
+        public UtilPack4Unity.TypeUtils.Json.Vec3 position;
+        public UtilPack4Unity.TypeUtils.Json.Vec2 uv;
+
+        public JPointInfomation() { }
 
         public JPointInfomation(PointInfomation pointInfomation)
         {
-            this.position = new TypeUtils.Json.Vec3(pointInfomation.position);
-            this.uv = new TypeUtils.Json.Vec2(pointInfomation.uv);
+            this.position = new UtilPack4Unity.TypeUtils.Json.Vec3(pointInfomation.position);
+            this.uv = new UtilPack4Unity.TypeUtils.Json.Vec2(pointInfomation.uv);
+        }
+
+        public PointInfomation ToPointInfomation()
+        {
+            return new PointInfomation
+            {
+                position = this.position.ToVector3(),
+                uv = this.uv.ToVector2()
+            };
         }
     }
 
@@ -123,7 +134,7 @@ public class CorrectableQuad : MonoBehaviour
             new ControlPoint (2, rb),
             new ControlPoint (3, lb)
         };
-        
+
         defaultCornerPoints = new ControlPoint[] {
             new ControlPoint (0, lt),
             new ControlPoint (1, rt),

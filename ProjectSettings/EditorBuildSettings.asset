@@ -6,18 +6,18 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Main.unity
+    guid: 236e0e9e73919c942b47cf913068c00c
+  - enabled: 1
     path: Assets/Scenes/Trim.unity
     guid: b75ec4b3798d3e549bebf5c850e9c4c6
+  - enabled: 1
+    path: Assets/Scenes/TrimmedPreview.unity
+    guid: a47903174ca3f624b9f33680dfdc4f26
   - enabled: 1
     path: Assets/Scenes/Calibration.unity
     guid: 17d8d977419172544895f7cdccc713c3
   - enabled: 1
     path: Assets/Scenes/UndistortedPreview.unity
     guid: a19413902371e6c448515573e78caa86
-  - enabled: 1
-    path: Assets/Scenes/TrimmedPreview.unity
-    guid: a47903174ca3f624b9f33680dfdc4f26
-  - enabled: 1
-    path: Assets/Scenes/Capture.unity
-    guid: 82cb215042f8743458243bf1a6426747
   m_configObjects: {}

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using OpenCVForUnity;
+using UtilPack4Unity;
 
 public class ContourLineView : MonoBehaviour
 {

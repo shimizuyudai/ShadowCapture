@@ -355,7 +355,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camera: {fileID: 120206341}
-  videoCaptureController: {fileID: 2034921980}
+  textureHolder: {fileID: 876038652}
 --- !u!114 &847190018
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -401,6 +401,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fileName: intrinsic.json
   videoCaptureController: {fileID: 2034921980}
+  isFisheye: 0
 --- !u!4 &876038653
 Transform:
   m_ObjectHideFlags: 0

@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using OpenCVForUnity;
 using OpenCVForUnity.CoreModule;
+using UtilPack4Unity;
 
 public class OpenCVUtils
 {

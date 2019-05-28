@@ -7,6 +7,7 @@ using System;
 using OpenCVForUnity.CoreModule;
 using OpenCVForUnity.ImgprocModule;
 using OpenCVForUnity.UnityUtils;
+using UtilPack4Unity;
 
 public partial class VideoCaptureController : TextureHolderBase
 {
@@ -189,16 +190,16 @@ public partial class VideoCaptureController : TextureHolderBase
         Setup();
         //print("backend : " + capture.getBackendName());
         //capture.set(Videoio.CAP_PROP_FORMAT, );
-        Debug.Log("CAP_PROP_FORMAT: " + capture.get(Videoio.CAP_PROP_FORMAT));
+        //Debug.Log("CAP_PROP_FORMAT: " + capture.get(Videoio.CAP_PROP_FORMAT));
         //Debug.Log("CAP_PROP_POS_MSEC: " + capture.get(Videoio.CAP_PROP_POS_MSEC));
         //Debug.Log("CAP_PROP_POS_FRAMES: " + capture.get(Videoio.CAP_PROP_POS_FRAMES));
         //Debug.Log("CAP_PROP_POS_AVI_RATIO: " + capture.get(Videoio.CAP_PROP_POS_AVI_RATIO));
         //Debug.Log("CAP_PROP_FRAME_COUNT: " + capture.get(Videoio.CAP_PROP_FRAME_COUNT));
-        Debug.Log("CAP_PROP_FPS: " + capture.get(Videoio.CAP_PROP_FPS));
-        Debug.Log("CAP_PROP_FRAME_WIDTH: " + capture.get(Videoio.CAP_PROP_FRAME_WIDTH));
-        Debug.Log("CAP_PROP_FRAME_HEIGHT: " + capture.get(Videoio.CAP_PROP_FRAME_HEIGHT));
-        double ext = capture.get(Videoio.CAP_PROP_FOURCC);
-        Debug.Log("CAP_PROP_FOURCC: " + (char)((int)ext & 0XFF) + (char)(((int)ext & 0XFF00) >> 8) + (char)(((int)ext & 0XFF0000) >> 16) + (char)(((int)ext & 0XFF000000) >> 24));
+        //Debug.Log("CAP_PROP_FPS: " + capture.get(Videoio.CAP_PROP_FPS));
+        //Debug.Log("CAP_PROP_FRAME_WIDTH: " + capture.get(Videoio.CAP_PROP_FRAME_WIDTH));
+        //Debug.Log("CAP_PROP_FRAME_HEIGHT: " + capture.get(Videoio.CAP_PROP_FRAME_HEIGHT));
+        //double ext = capture.get(Videoio.CAP_PROP_FOURCC);
+        //Debug.Log("CAP_PROP_FOURCC: " + (char)((int)ext & 0XFF) + (char)(((int)ext & 0XFF00) >> 8) + (char)(((int)ext & 0XFF0000) >> 16) + (char)(((int)ext & 0XFF000000) >> 24));
 
 
 
@@ -207,9 +208,9 @@ public partial class VideoCaptureController : TextureHolderBase
         int frameWidth = BGRMat.cols();
         int frameHeight = BGRMat.rows();
         Imgproc.cvtColor(BGRMat, RGBMat, Imgproc.COLOR_BGR2RGB);
-        print(BGRMat.width());
-        print(frameWidth);
-        print(frameHeight);
+        //print(BGRMat.width());
+        //print(frameWidth);
+        //print(frameHeight);
         texture = new Texture2D(frameWidth, frameHeight, TextureFormat.RGB24, false);
         Refresh();
         this.SetTexture(texture);
@@ -224,7 +225,7 @@ public partial class VideoCaptureController : TextureHolderBase
         if (videoCaptureSettings.IsControlSize)
         {
              var w  =SetWidth(videoCaptureSettings.Width);
-            print(w);
+            //print(w);
             SetHeight(videoCaptureSettings.Height);
         }
         if (videoCaptureSettings.IsControlCodec) SetCodec(videoCaptureSettings.Codec);

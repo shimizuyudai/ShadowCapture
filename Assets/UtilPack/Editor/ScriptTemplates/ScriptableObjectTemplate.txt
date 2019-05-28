@@ -1,7 +1,0 @@
-using UnityEngine;
-
-[CreateAssetMenu( menuName = "Custom/Create ClassName", fileName = "ClassName.asset" )]
-public class ClassName : ScriptableObject
-{
-
-} 

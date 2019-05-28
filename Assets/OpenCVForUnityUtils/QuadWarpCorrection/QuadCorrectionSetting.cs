@@ -8,6 +8,4 @@ public class QuadCorrectionSetting
     public CorrectableQuad.JPointInfomation RightTop;
     public CorrectableQuad.JPointInfomation RightBottom;
     public CorrectableQuad.JPointInfomation LeftBottom;
-
-    public TypeUtils.Json.Vec2 Size;
 }
