@@ -17,18 +17,6 @@ public class ImageCalibrator : MonoBehaviour
     [SerializeField]
     Calibrator calibrator;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
 
     [ContextMenu("Calibrate")]
     void Calibrate()

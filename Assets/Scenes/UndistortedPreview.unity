@@ -275,7 +275,6 @@ GameObject:
   - component: {fileID: 847190015}
   - component: {fileID: 847190014}
   - component: {fileID: 847190017}
-  - component: {fileID: 847190018}
   m_Layer: 0
   m_Name: Quad
   m_TagString: Untagged
@@ -356,20 +355,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camera: {fileID: 120206341}
   textureHolder: {fileID: 876038652}
---- !u!114 &847190018
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 847190013}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb9f926180fb99b46bfa74969078ecc0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  textureHolder: {fileID: 876038652}
-  renderer: {fileID: 847190014}
 --- !u!1 &876038651
 GameObject:
   m_ObjectHideFlags: 0
@@ -416,6 +401,85 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1406199053
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5427120975916680335, guid: 3a3955964eb753c4e803582fbc3f120f,
+        type: 3}
+      propertyPath: m_Name
+      value: TextureExporter
+      objectReference: {fileID: 0}
+    - target: {fileID: 5427120975916680332, guid: 3a3955964eb753c4e803582fbc3f120f,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5427120975916680332, guid: 3a3955964eb753c4e803582fbc3f120f,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5427120975916680332, guid: 3a3955964eb753c4e803582fbc3f120f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5427120975916680332, guid: 3a3955964eb753c4e803582fbc3f120f,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5427120975916680332, guid: 3a3955964eb753c4e803582fbc3f120f,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5427120975916680332, guid: 3a3955964eb753c4e803582fbc3f120f,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5427120975916680332, guid: 3a3955964eb753c4e803582fbc3f120f,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5427120975916680332, guid: 3a3955964eb753c4e803582fbc3f120f,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5427120975916680332, guid: 3a3955964eb753c4e803582fbc3f120f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5427120975916680332, guid: 3a3955964eb753c4e803582fbc3f120f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5427120975916680332, guid: 3a3955964eb753c4e803582fbc3f120f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5427120975916680333, guid: 3a3955964eb753c4e803582fbc3f120f,
+        type: 3}
+      propertyPath: textureHolder
+      value: 
+      objectReference: {fileID: 876038652}
+    - target: {fileID: 5427120975916680333, guid: 3a3955964eb753c4e803582fbc3f120f,
+        type: 3}
+      propertyPath: prefix
+      value: undistort
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3a3955964eb753c4e803582fbc3f120f, type: 3}
 --- !u!1001 &2034921979
 PrefabInstance:
   m_ObjectHideFlags: 0

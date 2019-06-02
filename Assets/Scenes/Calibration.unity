@@ -123,7 +123,6 @@ GameObject:
   - component: {fileID: 311666951}
   - component: {fileID: 311666952}
   - component: {fileID: 311666953}
-  - component: {fileID: 311666954}
   m_Layer: 0
   m_Name: ImageCalibrator
   m_TagString: Untagged
@@ -179,23 +178,6 @@ MonoBehaviour:
   squareSize: 1
   fileName: calib.json
   isFisheye: 0
---- !u!114 &311666954
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 311666950}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a05a3683cdce2464ba2e1ea5665e56b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fov: 33.75
-  resolutionW: 1280
-  resolutionH: 720
-  distance: 0
-  size: {x: 3, y: 1.6875}
 --- !u!1 &482868548
 GameObject:
   m_ObjectHideFlags: 0
@@ -309,10 +291,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dad1d93d8eef6c4b929d094089bb109, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  captureKey: 0
-  autoCaptureToggleKey: 0
-  saveKey: 0
-  interval: 0
+  calibrateKey: 97
+  saveKey: 115
+  autoCaptureToggleKey: 100
+  clearKey: 102
+  autoCaptureInterval: 3
+  autoCaptureNumber: 15
   audioSource: {fileID: 1124805758}
   countClip: {fileID: 8300000, guid: 991225b7c2d7c7846a38a6a1a951ba39, type: 3}
   captureClip: {fileID: 8300000, guid: 865e7634936d869429cee111c91d1d7b, type: 3}
@@ -456,7 +440,6 @@ GameObject:
   - component: {fileID: 1419526036}
   - component: {fileID: 1419526035}
   - component: {fileID: 1419526034}
-  - component: {fileID: 1419526033}
   - component: {fileID: 1419526037}
   m_Layer: 0
   m_Name: Quad
@@ -465,20 +448,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1419526033
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1419526032}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb9f926180fb99b46bfa74969078ecc0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  textureHolder: {fileID: 1872901416}
-  renderer: {fileID: 1419526034}
 --- !u!23 &1419526034
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -643,6 +612,80 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46b0e1b7d768250448f8d72a2f64d839, type: 3}
+--- !u!1001 &5427120976379317374
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5427120975916680335, guid: 3a3955964eb753c4e803582fbc3f120f,
+        type: 3}
+      propertyPath: m_Name
+      value: TextureExporter
+      objectReference: {fileID: 0}
+    - target: {fileID: 5427120975916680332, guid: 3a3955964eb753c4e803582fbc3f120f,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5427120975916680332, guid: 3a3955964eb753c4e803582fbc3f120f,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5427120975916680332, guid: 3a3955964eb753c4e803582fbc3f120f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5427120975916680332, guid: 3a3955964eb753c4e803582fbc3f120f,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5427120975916680332, guid: 3a3955964eb753c4e803582fbc3f120f,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5427120975916680332, guid: 3a3955964eb753c4e803582fbc3f120f,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5427120975916680332, guid: 3a3955964eb753c4e803582fbc3f120f,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5427120975916680332, guid: 3a3955964eb753c4e803582fbc3f120f,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5427120975916680332, guid: 3a3955964eb753c4e803582fbc3f120f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5427120975916680332, guid: 3a3955964eb753c4e803582fbc3f120f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5427120975916680332, guid: 3a3955964eb753c4e803582fbc3f120f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5427120975916680333, guid: 3a3955964eb753c4e803582fbc3f120f,
+        type: 3}
+      propertyPath: textureHolder
+      value: 
+      objectReference: {fileID: 1872901416}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3a3955964eb753c4e803582fbc3f120f, type: 3}
 --- !u!1001 &8511956678110469208
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -709,6 +752,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8511956679513598320, guid: 3a7b644f9796d67449b3bc87efd773a1,
+        type: 3}
+      propertyPath: videoCaptureSettings.DeviceId
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8511956679513598320, guid: 3a7b644f9796d67449b3bc87efd773a1,
+        type: 3}
+      propertyPath: videoCaptureSettings.Width
+      value: 1920
+      objectReference: {fileID: 0}
+    - target: {fileID: 8511956679513598320, guid: 3a7b644f9796d67449b3bc87efd773a1,
+        type: 3}
+      propertyPath: videoCaptureSettings.Height
+      value: 1080
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3a7b644f9796d67449b3bc87efd773a1, type: 3}

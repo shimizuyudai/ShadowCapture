@@ -325,9 +325,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 2036626319}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8bef770687e746478bce098aa9616d9, type: 3}
+  m_Script: {fileID: 11500000, guid: 99962bfa7d9d2e042a6e1bfea2289542, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  prefix: 
+  useDateTime: 1
+  directoryName: Capture
+  textureHolder: {fileID: 1872901416}
+  textureUtilBehaviour: {fileID: 2036626321}
+  imageType: 0
+  exportKey: 0
 --- !u!114 &2036626321
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -337,18 +344,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2036626319}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a44af66c59b0a2b4c89e3e1160d51517, type: 3}
+  m_Script: {fileID: 11500000, guid: fc234981d1b95a84fb94bb99045f799c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefix: capture
-  useDateTime: 1
-  directoryName: Capture
-  textureHolder: {fileID: 1872901416}
-  texture: {fileID: 0}
-  renderTexture: {fileID: 0}
-  textureUtilBehaviour: {fileID: 2036626320}
-  imageType: 0
-  exportKey: 32
 --- !u!4 &2036626322
 Transform:
   m_ObjectHideFlags: 0

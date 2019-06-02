@@ -385,8 +385,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 158eb37b449c321478c95103ae0297d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editableGridQuad: {fileID: 0}
-  line: {fileID: 2119702628}
 --- !u!4 &1753314003
 Transform:
   m_ObjectHideFlags: 0
@@ -604,8 +602,13 @@ PrefabInstance:
       objectReference: {fileID: 1699452484}
     - target: {fileID: 1078026304010611607, guid: 9d3a53b41635d3b40ab0e54b74e64d0f,
         type: 3}
-      propertyPath: resetKey
-      value: 8
+      propertyPath: size.x
+      value: 1.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1078026304010611607, guid: 9d3a53b41635d3b40ab0e54b74e64d0f,
+        type: 3}
+      propertyPath: size.y
+      value: 0.9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9d3a53b41635d3b40ab0e54b74e64d0f, type: 3}

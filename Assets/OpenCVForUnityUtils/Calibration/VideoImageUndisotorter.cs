@@ -57,14 +57,16 @@ public class VideoImageUndisotorter : TextureHolderBase
 
     private void Refresh()
     {
-        //Imgproc.remap(videoCaptureController.RGBMat, rgbMat, mapX, mapY, Imgproc.INTER_LINEAR);
+        //
         if (isFisheye)
         {
             Calib3d.fisheye_undistortImage(videoCaptureController.RGBMat, rgbMat, cameraMatrix, distCoeffs, newCameraMatrix);
+
         }
         else
         {
-            Calib3d.undistort(videoCaptureController.RGBMat, rgbMat, cameraMatrix, distCoeffs, newCameraMatrix);
+            Imgproc.remap(videoCaptureController.RGBMat, rgbMat, mapX, mapY, Imgproc.INTER_LINEAR);
+            //Calib3d.undistort(videoCaptureController.RGBMat, rgbMat, cameraMatrix, distCoeffs, newCameraMatrix);
         }
         
         Core.flip(rgbMat, rgbMat, 0);

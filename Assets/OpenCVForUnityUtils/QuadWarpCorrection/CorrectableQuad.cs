@@ -107,13 +107,11 @@ public class CorrectableQuad : MonoBehaviour
         {
             for (var x = 0; x < segmentX; x++)
             {
-                var p = new Vector2((float)x / (float)(segmentX - 1), 1f - (float)y / (float)(segmentY - 1));
+                var p = new Vector2((float)x / (float)(segmentX - 1), (float)y / (float)(segmentY - 1));
                 var pos = leftTop.position * (1f - p.x) * (1f - p.y) + rightTop.position * (p.x) * (1f - p.y)
                     + rightBottom.position * (p.x) * (p.y) + leftBottom.position * (1f - p.x) * (p.y);
                 var uv = leftTop.uv * (1f - p.x) * (1f - p.y) + rightTop.uv * (p.x) * (1f - p.y)
                     + rightBottom.uv * (p.x) * (p.y) + leftBottom.uv * (1f - p.x) * (p.y);
-                uv.y = 1 - uv.y;
-                //print(uv);
                 vertices.Add(pos);
                 uvs.Add(uv);
             }

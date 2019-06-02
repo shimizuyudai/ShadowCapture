@@ -31,6 +31,8 @@ public class QuadWarpCorrectionController : MonoBehaviour
     Material lineMaterial;
     [SerializeField]
     Color lineColor;
+    [SerializeField]
+    Renderer renderer;
 
     public Vector3[] Points
     {
@@ -55,12 +57,15 @@ public class QuadWarpCorrectionController : MonoBehaviour
     private void TextureHolder_ChangeTextureEvent(Texture texture)
     {
         Init(new Vector2(texture.width, texture.height));
+        renderer.material.mainTexture = texture;
     }
 
     public void Init(Vector2 size)
     {
         var h = captureCamera.orthographicSize * 2f;
-        aspect = EMath.GetShrinkFitSize(size, new Vector2(h*captureCamera.aspect, h));
+        aspect = EMath.GetShrinkFitSize(size, new Vector2(h * captureCamera.aspect, h));
+        renderer.transform.localScale = new Vector3(aspect.x, aspect.y, 1f);
+
         InitPoints();
         Restore();
     }
@@ -82,6 +87,7 @@ public class QuadWarpCorrectionController : MonoBehaviour
     private void Restore()
     {
         var setting = IOHandler.LoadJson<QuadCorrectionSetting>(IOHandler.IntoStreamingAssets(settingFileName));
+        if (setting == null) return;
         Points[0] = setting.LeftTop.position.ToVector3();
         Points[1] = setting.RightTop.position.ToVector3();
         Points[2] = setting.RightBottom.position.ToVector3();
@@ -154,7 +160,7 @@ public class QuadWarpCorrectionController : MonoBehaviour
         return -1;
     }
 
-    
+
 
     public void Save()
     {
@@ -172,6 +178,7 @@ public class QuadWarpCorrectionController : MonoBehaviour
                 uv = uv
             };
             piList.Add(pi);
+            print(i + " : " + uv);
         }
 
         var setting = new QuadCorrectionSetting();

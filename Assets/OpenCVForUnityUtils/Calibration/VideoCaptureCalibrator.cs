@@ -12,10 +12,12 @@ using OpenCVForUnity.Calib3dModule;
 public class VideoCaptureCalibrator : MonoBehaviour
 {
     [SerializeField]
-    KeyCode captureKey, autoCaptureToggleKey, saveKey;
+    KeyCode calibrateKey, saveKey, autoCaptureToggleKey, clearKey;
 
     [SerializeField]
-    int interval;
+    int autoCaptureInterval = 3;
+    [SerializeField]
+    int autoCaptureNumber = 15;
 
     [SerializeField]
     AudioSource audioSource;
@@ -81,28 +83,32 @@ public class VideoCaptureCalibrator : MonoBehaviour
         }
     }
 
-    public void Capture()
+    public bool Calibrate()
     {
+        print("test");
+        var result = false;
         Imgproc.cvtColor(videoCaptureController.BGRMat, grayMat, Imgproc.COLOR_BGR2GRAY);
         Core.flip(grayMat, grayMat, 0);
-        calibrator.Calibrate(grayMat);
-    }
+        var r = calibrator.Calibrate(grayMat);
 
-    private void Calibrator_CalibrationEvent()
-    {
-        audioSource.PlayOneShot(captureClip);
+        result = r>= 0.0;
+        if (result)
+        {
+            audioSource.PlayOneShot(captureClip);
+        }
+        return result;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(captureKey))
+        if (Input.GetKeyDown(calibrateKey))
         {
-            Capture();
+            Calibrate();
         }
         else if (Input.GetKeyDown(autoCaptureToggleKey))
         {
-            ToggleAutoCapture();
+            ToggleAutoCalibrate();
         }
         else if (Input.GetKeyDown(saveKey))
         {
@@ -110,11 +116,11 @@ public class VideoCaptureCalibrator : MonoBehaviour
         }
     }
 
-    void ToggleAutoCapture()
+    void ToggleAutoCalibrate()
     {
         if (autoCaptureRoutine == null)
         {
-            autoCaptureRoutine = AutoCaptureRoutine();
+            autoCaptureRoutine = AutoCalibrateRoutine();
             StartCoroutine(autoCaptureRoutine);
         }
         else
@@ -129,18 +135,18 @@ public class VideoCaptureCalibrator : MonoBehaviour
         calibrator.Save();
     }
 
-    IEnumerator AutoCaptureRoutine()
+    IEnumerator AutoCalibrateRoutine()
     {
-
-        while (true)
+        var cnt = 0;
+        while (cnt < autoCaptureNumber)
         {
-            var cnt = 0;
-            for (var i = 0; i < interval; i++)
+            for (var i = 0; i <= autoCaptureInterval; i++)
             {
-                cnt++;
-                if (cnt >= interval)
+                if (i >= autoCaptureInterval)
                 {
-                    Capture();
+                    var t = Calibrate();
+                    print("called");
+                    if (t) cnt++;
                     break;
                 }
                 audioSource.PlayOneShot(countClip);

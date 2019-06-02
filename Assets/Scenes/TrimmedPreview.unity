@@ -241,7 +241,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7b6b125dac467c40b24d05ff8f44a7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fileName: quadWarpCorrectionSetting.json
+  fileName: correction.json
   destSize: {x: 16, y: 9}
   cam: {fileID: 534669904}
   correctableQuad: {fileID: 576750247}

@@ -122,6 +122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 57172062}
   - component: {fileID: 57172063}
+  - component: {fileID: 57172064}
   m_Layer: 0
   m_Name: ShadowCaptureManager
   m_TagString: Untagged
@@ -159,6 +160,20 @@ MonoBehaviour:
   heatmapFilter: {fileID: 204965503}
   delay: 1
   captureKey: 97
+--- !u!114 &57172064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 57172061}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f79a077998a0c245991334b921adb0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interval: 1
+  isDump: 1
 --- !u!1 &204965498
 GameObject:
   m_ObjectHideFlags: 0
@@ -171,6 +186,7 @@ GameObject:
   - component: {fileID: 204965500}
   - component: {fileID: 204965501}
   - component: {fileID: 204965503}
+  - component: {fileID: 204965502}
   m_Layer: 0
   m_Name: HeatmapFilter
   m_TagString: Untagged
@@ -190,7 +206,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &204965500
 MonoBehaviour:
@@ -222,6 +238,23 @@ MonoBehaviour:
   IsFilteringOnRenderImage: 0
   imageFilters:
   - {fileID: 204965503}
+  - {fileID: 204965502}
+--- !u!114 &204965502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 204965498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a20a1f2a91033243942a0dad754c005, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shader: {fileID: 4800000, guid: 0df2a504ad6f56644a63918495902fbe, type: 3}
+  id: 1
+  IsSelfFilter: 0
+  repeat: 3
 --- !u!114 &204965503
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -237,8 +270,8 @@ MonoBehaviour:
   shader: {fileID: 4800000, guid: 5c94f2f6a2daacd41a5769099ac4f125, type: 3}
   id: 0
   IsSelfFilter: 0
-  addRate: 0.1
-  subRate: 0.08
+  addRate: 0.08
+  subRate: 0.06
 --- !u!1 &362246731
 GameObject:
   m_ObjectHideFlags: 0
@@ -430,7 +463,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7b6b125dac467c40b24d05ff8f44a7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fileName: quadWarpCorrectionSetting.json
+  fileName: correction.json
   destSize: {x: 16, y: 9}
   cam: {fileID: 534669904}
   correctableQuad: {fileID: 576750247}
@@ -729,6 +762,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8511956679513598320, guid: 3a7b644f9796d67449b3bc87efd773a1,
+        type: 3}
+      propertyPath: videoCaptureSettings.DeviceId
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8511956679513598320, guid: 3a7b644f9796d67449b3bc87efd773a1,
+        type: 3}
+      propertyPath: videoCaptureSettings.Width
+      value: 1280
+      objectReference: {fileID: 0}
+    - target: {fileID: 8511956679513598320, guid: 3a7b644f9796d67449b3bc87efd773a1,
+        type: 3}
+      propertyPath: videoCaptureSettings.Height
+      value: 720
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3a7b644f9796d67449b3bc87efd773a1, type: 3}
 --- !u!114 &1082909495 stripped
@@ -755,12 +803,12 @@ GameObject:
   - component: {fileID: 1154593076}
   - component: {fileID: 1154593073}
   - component: {fileID: 1154593081}
-  - component: {fileID: 1154593078}
-  - component: {fileID: 1154593082}
+  - component: {fileID: 1154593084}
   - component: {fileID: 1154593077}
   - component: {fileID: 1154593075}
   - component: {fileID: 1154593079}
   - component: {fileID: 1154593080}
+  - component: {fileID: 1154593078}
   - component: {fileID: 1154593083}
   m_Layer: 0
   m_Name: Filter
@@ -785,8 +833,8 @@ MonoBehaviour:
   IsFilteringOnRenderImage: 0
   imageFilters:
   - {fileID: 1154593081}
+  - {fileID: 1154593084}
   - {fileID: 1154593078}
-  - {fileID: 1154593082}
   - {fileID: 1154593077}
   - {fileID: 1154593075}
   - {fileID: 1154593079}
@@ -865,10 +913,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a20a1f2a91033243942a0dad754c005, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shader: {fileID: 4800000, guid: 0df2a504ad6f56644a63918495902fbe, type: 3}
-  id: 1
+  shader: {fileID: 4800000, guid: b0f50976da05af34e88943d4ea7c32f2, type: 3}
+  id: 7
   IsSelfFilter: 0
-  repeat: 1
+  repeat: 5
 --- !u!114 &1154593079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -882,7 +930,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shader: {fileID: 4800000, guid: 01c42546f1925a84daaf7c486a1af9c1, type: 3}
-  id: 3
+  id: 5
   IsSelfFilter: 0
   repeat: 1
 --- !u!114 &1154593080
@@ -898,7 +946,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shader: {fileID: 4800000, guid: 09dbeeb40d3597f4d90393e5594e26ee, type: 3}
-  id: 3
+  id: 6
   IsSelfFilter: 0
   repeat: 1
 --- !u!114 &1154593081
@@ -916,22 +964,6 @@ MonoBehaviour:
   shader: {fileID: 4800000, guid: 1c11e97a0bf4c3f4fac0c320c8cebf98, type: 3}
   id: 0
   IsSelfFilter: 0
---- !u!114 &1154593082
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1154593072}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a20a1f2a91033243942a0dad754c005, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shader: {fileID: 4800000, guid: 0df2a504ad6f56644a63918495902fbe, type: 3}
-  id: 2
-  IsSelfFilter: 0
-  repeat: 3
 --- !u!114 &1154593083
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -947,7 +979,23 @@ MonoBehaviour:
   shader: {fileID: 4800000, guid: 0df2a504ad6f56644a63918495902fbe, type: 3}
   id: 10
   IsSelfFilter: 0
-  repeat: 10
+  repeat: 3
+--- !u!114 &1154593084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1154593072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a20a1f2a91033243942a0dad754c005, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shader: {fileID: 4800000, guid: 767cf2987e30a234aaa270967f7ce657, type: 3}
+  id: 1
+  IsSelfFilter: 0
+  repeat: 1
 --- !u!1 &1288987662
 GameObject:
   m_ObjectHideFlags: 0
@@ -1080,7 +1128,7 @@ PrefabInstance:
     - target: {fileID: 7233839972362148644, guid: 46b0e1b7d768250448f8d72a2f64d839,
         type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 7233839972362148644, guid: 46b0e1b7d768250448f8d72a2f64d839,
         type: 3}
@@ -1130,7 +1178,7 @@ Transform:
   - {fileID: 755364946}
   - {fileID: 1928610180}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1798546413
 GameObject:

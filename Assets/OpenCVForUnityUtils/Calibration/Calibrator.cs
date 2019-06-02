@@ -33,7 +33,9 @@ public class Calibrator : MonoBehaviour
     [SerializeField]
     bool isFisheye;
 
-    public event Action CalibrationEvent;
+    public event Action<double> CalibrationEvent;
+
+    float width, height;
 
     private void Awake()
     {
@@ -51,42 +53,43 @@ public class Calibrator : MonoBehaviour
     public void Init(Mat mat)
     {
 
+        
+
+        width = mat.width();
+        height = mat.height();
         Clear();
 
-        float width = mat.width();
-        float height = mat.height();
-
-        float imageSizeScale = 1.0f;
-        float widthScale = (float)Screen.width / width;
-        float heightScale = (float)Screen.height / height;
+        //float imageSizeScale = 1.0f;
+        //float widthScale = (float)Screen.width / width;
+        //float heightScale = (float)Screen.height / height;
 
         this.cameraMatrix = CreateCameraMatrix(width, height);
 
-        distCoeffs = new MatOfDouble(0, 0, 0, 0, 0);
-        Size imageSize = new Size(width * imageSizeScale, height * imageSizeScale);
-        double apertureWidth = 0;
-        double apertureHeight = 0;
-        double[] fovx = new double[1];
-        double[] fovy = new double[1];
-        double[] focalLength = new double[1];
-        Point principalPoint = new Point(0, 0);
-        double[] aspectratio = new double[1];
+        
+        //Size imageSize = new Size(width * imageSizeScale, height * imageSizeScale);
+        //double apertureWidth = 0;
+        //double apertureHeight = 0;
+        //double[] fovx = new double[1];
+        //double[] fovy = new double[1];
+        //double[] focalLength = new double[1];
+        //Point principalPoint = new Point(0, 0);
+        //double[] aspectratio = new double[1];
 
 
-        Calib3d.calibrationMatrixValues(this.cameraMatrix, imageSize, apertureWidth, apertureHeight, fovx, fovy, focalLength, principalPoint, aspectratio);
-        Debug.Log("imageSize " + imageSize.ToString());
-        Debug.Log("apertureWidth " + apertureWidth);
-        Debug.Log("apertureHeight " + apertureHeight);
-        Debug.Log("fovx " + fovx[0]);
-        Debug.Log("fovy " + fovy[0]);
-        Debug.Log("focalLength " + focalLength[0]);
-        Debug.Log("principalPoint " + principalPoint.ToString());
-        Debug.Log("aspectratio " + aspectratio[0]);
-        print(this.cameraMatrix);
-        rvecs = new List<Mat>();
-        tvecs = new List<Mat>();
-        allImgs = new List<Mat>();
-        imagePoints = new List<Mat>();
+        //Calib3d.calibrationMatrixValues(this.cameraMatrix, imageSize, apertureWidth, apertureHeight, fovx, fovy, focalLength, principalPoint, aspectratio);
+        //Debug.Log("imageSize " + imageSize.ToString());
+        //Debug.Log("apertureWidth " + apertureWidth);
+        //Debug.Log("apertureHeight " + apertureHeight);
+        //Debug.Log("fovx " + fovx[0]);
+        //Debug.Log("fovy " + fovy[0]);
+        //Debug.Log("focalLength " + focalLength[0]);
+        //Debug.Log("principalPoint " + principalPoint.ToString());
+        //Debug.Log("aspectratio " + aspectratio[0]);
+        //print(this.cameraMatrix);
+        //rvecs = new List<Mat>();
+        //tvecs = new List<Mat>();
+        //allImgs = new List<Mat>();
+        //imagePoints = new List<Mat>();
     }
 
     private Mat CreateCameraMatrix(float width, float height)
@@ -136,20 +139,33 @@ public class Calibrator : MonoBehaviour
         {
             tvec.Dispose();
         }
-
-        imagePoints = new List<Mat>();
+        
         if (cameraMatrix != null)
         {
             cameraMatrix.Dispose();
         }
+        
         if (distCoeffs != null)
         {
             distCoeffs.Dispose();
         }
+
+        foreach (var img in allImgs)
+        {
+            img.Dispose();
+        }
+
+        rvecs = new List<Mat>();
+        tvecs = new List<Mat>();
+        imagePoints = new List<Mat>();
+        distCoeffs = new MatOfDouble(0, 0, 0, 0, 0);
+        cameraMatrix = CreateCameraMatrix(width, height);
+        allImgs = new List<Mat>();
     }
 
     public double Calibrate(Mat mat)
     {
+        print("calibration");
         var r = -1.0;
         MatOfPoint2f points = new MatOfPoint2f();
         Size patternSize = new Size((int)segmentX, (int)segmentY);
@@ -165,7 +181,7 @@ public class Calibrator : MonoBehaviour
         else
         {
             Debug.Log("Invalid frame.");
-            mat.Dispose();
+            //mat.Dispose();
             if (points != null)
                 points.Dispose();
             return -1;
@@ -196,7 +212,7 @@ public class Calibrator : MonoBehaviour
             {
                 r = Calib3d.calibrateCamera(objectPoints, imagePoints, mat.size(), cameraMatrix, distCoeffs, rvecs, tvecs, 0);
             }
-            CalibrationEvent?.Invoke();
+            CalibrationEvent?.Invoke(r);
 
             //for (var i = 0; i < objectPoints.Count; i++)
             //{
