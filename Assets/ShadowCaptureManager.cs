@@ -5,7 +5,8 @@ using UtilPack4Unity;
 
 public class ShadowCaptureManager : MonoBehaviour
 {
-
+    [SerializeField]
+    TextureHolderBase[] textureHolders;
     
     [SerializeField]
     DifferenceImageFilter differenceImageFilter;
