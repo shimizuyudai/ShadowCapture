@@ -168,6 +168,12 @@ public partial class VideoCaptureController : TextureHolderBase
 
     private void Initialize()
     {
+
+        foreach (var device in WebCamTexture.devices)
+        {
+            print(device.name);
+        }
+
         Close();
 
         videoCaptureSettings = LoadSetting();
@@ -179,7 +185,30 @@ public partial class VideoCaptureController : TextureHolderBase
         BGRMat = new Mat();
         RGBMat = new Mat();
         capture = new VideoCapture();
-        capture.open(videoCaptureSettings.DeviceId, Videoio.CAP_DSHOW);
+
+        if (!string.IsNullOrEmpty(videoCaptureSettings.DeviceName))
+        {
+            var devices = WebCamTexture.devices;
+            for (var i = 0; i < devices.Length; i++)
+            {
+                if (devices[i].name == videoCaptureSettings.DeviceName)
+                {
+                    capture.open(i, Videoio.CAP_DSHOW);
+                    break;
+                }
+            }
+        }
+
+        if (!capture.isOpened())
+        {
+            var id = videoCaptureSettings.DeviceId;
+            //for (var i = videoCaptureSettings.DeviceId; i >= 0; i--)
+            //{
+            //    capture.open(i, Videoio.CAP_DSHOW);
+            //    if (capture.isOpened()) break;
+            //}
+        }
+
         if (!capture.isOpened())
         {
             Debug.LogError("Missing Webcam");
