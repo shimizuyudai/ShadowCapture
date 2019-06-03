@@ -7,41 +7,100 @@ using OpenCVForUnity.ImgprocModule;
 using OpenCVForUnity.CoreModule;
 using OpenCVForUnity.ImgcodecsModule;
 using OpenCVForUnity.UnityUtils;
+using UtilPack4Unity;
 
+[RequireComponent(typeof(Calibrator))]
 public class ImageCalibrator : MonoBehaviour
 {
     [SerializeField]
     string directory;
     [SerializeField]
-    string[] targetExtensions;
+    string[] targetExtensions = new string[] {".jpg", ".png" };
     [SerializeField]
     Calibrator calibrator;
+    [SerializeField]
+    string fileName;
+    [SerializeField]
+    bool autoSave;
+    [SerializeField]
+    float interval;
 
+    [SerializeField]
+    bool draw;
+    [SerializeField]
+    Renderer renderer;
+    Mat rgbMat;
+    Texture2D texture;
 
     [ContextMenu("Calibrate")]
     void Calibrate()
     {
-        if (!Directory.Exists(directory)) return;
+        StartCoroutine(CalibrateRoutine());
+    }
+
+    private void Reset()
+    {
+        calibrator = GetComponent<Calibrator>();
+    }
+
+    private void Init(Mat mat)
+    {
+        Clear();
+        rgbMat = new Mat(mat.rows(), mat.cols(), CvType.CV_8UC3);
+        calibrator.Init(mat);
+        texture = new Texture2D(mat.cols(), mat.rows(), TextureFormat.RGB24, false);
+    }
+
+    private void Clear()
+    {
+        if (rgbMat != null)
+        {
+            rgbMat.Dispose();
+        }
+        if (texture != null)
+        {
+            DestroyImmediate(texture);
+        }
+    }
+
+    IEnumerator CalibrateRoutine()
+    {
+        if (!Directory.Exists(directory)) yield break; ;
 
         var files = Directory.GetFiles(directory);
         files = files.Where(e => targetExtensions.Contains(Path.GetExtension(e).ToLower())).ToArray();
-        if (files.Length < 1) return;
+        if (files.Length < 1) yield break; ;
 
         calibrator.Setup();
-        var hasInit = false;
-        foreach (var file in files)
+        for (var i = 0; i < files.Length; i++)
         {
-            using (Mat gray = Imgcodecs.imread(file, Imgcodecs.IMREAD_GRAYSCALE))
+            using (Mat gray = Imgcodecs.imread(files[i], Imgcodecs.IMREAD_GRAYSCALE))
             {
-                if (!hasInit)
+                if (i == 0)
                 {
-                    calibrator.Init(gray);
-                    hasInit = true;
+                    Init(gray);
                 }
                 calibrator.Calibrate(gray);
+                if (draw)
+                {
+                    Imgproc.cvtColor(gray, rgbMat, Imgproc.COLOR_GRAY2RGB);
+                    calibrator.Draw(gray, rgbMat);
+                    Utils.matToTexture2D(rgbMat, texture);
+                    renderer.material.mainTexture = texture;
+                }
+               
+                print("progress : " + (i + 1) + " / " + files.Length);
+                yield return new WaitForSeconds(interval);
             }
         }
-        calibrator.Save();
+        if (autoSave)
+        {
+            calibrator.Save(IOHandler.IntoStreamingAssets(fileName));
+        }
+
         calibrator.Clear();
+
+        print("Complete Calibration");
+        yield break;
     }
 }

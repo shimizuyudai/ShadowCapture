@@ -8,6 +8,7 @@ using OpenCVForUnity.CoreModule;
 using OpenCVForUnity.ImgprocModule;
 using OpenCVForUnity.UnityUtils;
 using OpenCVForUnity.Calib3dModule;
+using UtilPack4Unity;
 
 public class VideoCaptureCalibrator : MonoBehaviour
 {
@@ -35,6 +36,9 @@ public class VideoCaptureCalibrator : MonoBehaviour
 
     Texture2D texture;
     Mat grayMat, rgbMat;
+
+    [SerializeField]
+    string fileName;
 
     private void Awake()
     {
@@ -132,7 +136,7 @@ public class VideoCaptureCalibrator : MonoBehaviour
 
     void Save()
     {
-        calibrator.Save();
+        calibrator.Save(IOHandler.IntoStreamingAssets(fileName));
     }
 
     IEnumerator AutoCalibrateRoutine()

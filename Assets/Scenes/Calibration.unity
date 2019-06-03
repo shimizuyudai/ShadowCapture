@@ -142,7 +142,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &311666952
 MonoBehaviour:
@@ -156,11 +156,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51a5545d95ace3a429b6bd35324e7be3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  directory: C:\Users\shimizuyudai\Desktop\Capture
+  directory: C:\Users\shimizuyudai\Documents\Artworks\MediaArt\ShadowPlus\ShadowCapture\Assets\StreamingAssets\Capture
   targetExtensions:
   - .jpg
   - .png
   calibrator: {fileID: 311666953}
+  fileName: tempCalib.json
+  autoSave: 0
+  interval: 0
 --- !u!114 &311666953
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,11 +176,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 825f4e69c9f35b84a8277f71cf5a5e05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  segmentX: 7
-  segmentY: 4
+  segmentX: 9
+  segmentY: 6
   squareSize: 1
-  fileName: calib.json
-  isFisheye: 0
+  boardType: 1
 --- !u!1 &482868548
 GameObject:
   m_ObjectHideFlags: 0
@@ -302,6 +304,7 @@ MonoBehaviour:
   captureClip: {fileID: 8300000, guid: 865e7634936d869429cee111c91d1d7b, type: 3}
   videoCaptureController: {fileID: 1872901416}
   calibrator: {fileID: 1124805757}
+  fileName: intrinsic.json
 --- !u!4 &1124805756
 Transform:
   m_ObjectHideFlags: 0
@@ -314,7 +317,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1124805757
 MonoBehaviour:
@@ -331,8 +334,7 @@ MonoBehaviour:
   segmentX: 7
   segmentY: 4
   squareSize: 1
-  fileName: intrinsic.json
-  isFisheye: 0
+  boardType: 1
 --- !u!82 &1124805758
 AudioSource:
   m_ObjectHideFlags: 0
@@ -505,7 +507,7 @@ Transform:
   m_LocalScale: {x: 1.6, y: 0.9, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1419526037
 MonoBehaviour:
@@ -583,7 +585,7 @@ PrefabInstance:
     - target: {fileID: 7233839972362148644, guid: 46b0e1b7d768250448f8d72a2f64d839,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7233839972362148644, guid: 46b0e1b7d768250448f8d72a2f64d839,
         type: 3}

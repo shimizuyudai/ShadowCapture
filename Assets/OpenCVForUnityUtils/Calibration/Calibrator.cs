@@ -9,90 +9,58 @@ using OpenCVForUnity.UnityUtils;
 using OpenCVForUnity.Calib3dModule;
 using UtilPack4Unity;
 
-public class Calibrator : MonoBehaviour
+public class Calibrator:MonoBehaviour
 {
     [SerializeField]
-    int segmentX, segmentY;
-
+    protected int segmentX, segmentY;
     [SerializeField]
-    float squareSize = 1f;
+    protected float squareSize = 1f;
 
-    Size patternSize;
-    List<Mat> imagePoints;
-    MatOfDouble distCoeffs;
-    Mat cameraMatrix;
-    List<Mat> rvecs;
-    List<Mat> tvecs;
-    List<Mat> allImgs;
-
-    double repErr = 0;
-
-    [SerializeField]
-    string fileName;
-
-    [SerializeField]
-    bool isFisheye;
+    protected List<Mat> rvecs;
+    protected List<Mat> tvecs;
+    protected List<Mat> allImgs;
 
     public event Action<double> CalibrationEvent;
-
     float width, height;
+
+    protected List<Mat> imagePoints;
+    protected MatOfDouble distCoeffs;
+    protected Mat cameraMatrix;
+
+    public enum BoardType
+    {
+        ChessBoard,
+        CirclesGrid,
+        AsymmetricCirclesGrid
+    }
+
+    [SerializeField]
+    protected BoardType boardType;
 
     private void Awake()
     {
         Setup();
     }
 
-    public void Setup()
+    public virtual void Setup()
     {
-        patternSize = new Size(segmentX, segmentY);
-        allImgs = new List<Mat>();
         rvecs = new List<Mat>();
         tvecs = new List<Mat>();
+        imagePoints = new List<Mat>();
+        distCoeffs = new MatOfDouble(0, 0, 0, 0, 0);
+        cameraMatrix = CreateCameraMatrix(width, height);
+        allImgs = new List<Mat>();
     }
 
-    public void Init(Mat mat)
+    public virtual void Init(Mat mat)
     {
-
-        
-
         width = mat.width();
         height = mat.height();
         Clear();
-
-        //float imageSizeScale = 1.0f;
-        //float widthScale = (float)Screen.width / width;
-        //float heightScale = (float)Screen.height / height;
-
-        this.cameraMatrix = CreateCameraMatrix(width, height);
-
-        
-        //Size imageSize = new Size(width * imageSizeScale, height * imageSizeScale);
-        //double apertureWidth = 0;
-        //double apertureHeight = 0;
-        //double[] fovx = new double[1];
-        //double[] fovy = new double[1];
-        //double[] focalLength = new double[1];
-        //Point principalPoint = new Point(0, 0);
-        //double[] aspectratio = new double[1];
-
-
-        //Calib3d.calibrationMatrixValues(this.cameraMatrix, imageSize, apertureWidth, apertureHeight, fovx, fovy, focalLength, principalPoint, aspectratio);
-        //Debug.Log("imageSize " + imageSize.ToString());
-        //Debug.Log("apertureWidth " + apertureWidth);
-        //Debug.Log("apertureHeight " + apertureHeight);
-        //Debug.Log("fovx " + fovx[0]);
-        //Debug.Log("fovy " + fovy[0]);
-        //Debug.Log("focalLength " + focalLength[0]);
-        //Debug.Log("principalPoint " + principalPoint.ToString());
-        //Debug.Log("aspectratio " + aspectratio[0]);
-        //print(this.cameraMatrix);
-        //rvecs = new List<Mat>();
-        //tvecs = new List<Mat>();
-        //allImgs = new List<Mat>();
-        //imagePoints = new List<Mat>();
+        Setup();
     }
 
-    private Mat CreateCameraMatrix(float width, float height)
+    protected Mat CreateCameraMatrix(float width, float height)
     {
         int max_d = (int)Mathf.Max(width, height);
         double fx = max_d;
@@ -113,14 +81,7 @@ public class Calibrator : MonoBehaviour
         return camMatrix;
     }
 
-    public void Save()
-    {
-        var intrinsicInfo = new IntrinsicInfo(cameraMatrix, distCoeffs, rvecs, tvecs);
-        IOHandler.SaveJson(IOHandler.IntoStreamingAssets(fileName), intrinsicInfo);
-        print("save");
-    }
-
-    public void Clear()
+    public virtual void Clear()
     {
 
         if (imagePoints != null)
@@ -139,12 +100,12 @@ public class Calibrator : MonoBehaviour
         {
             tvec.Dispose();
         }
-        
+
         if (cameraMatrix != null)
         {
             cameraMatrix.Dispose();
         }
-        
+
         if (distCoeffs != null)
         {
             distCoeffs.Dispose();
@@ -154,27 +115,48 @@ public class Calibrator : MonoBehaviour
         {
             img.Dispose();
         }
-
-        rvecs = new List<Mat>();
-        tvecs = new List<Mat>();
-        imagePoints = new List<Mat>();
-        distCoeffs = new MatOfDouble(0, 0, 0, 0, 0);
-        cameraMatrix = CreateCameraMatrix(width, height);
-        allImgs = new List<Mat>();
     }
 
-    public double Calibrate(Mat mat)
+    public virtual void Save(string path)
     {
-        print("calibration");
-        var r = -1.0;
-        MatOfPoint2f points = new MatOfPoint2f();
-        Size patternSize = new Size((int)segmentX, (int)segmentY);
+        var intrinsicInfo = new IntrinsicInfo(cameraMatrix, distCoeffs, rvecs, tvecs);
+        IOHandler.SaveJson(path, intrinsicInfo);
+    }
+
+    protected virtual void OnDestroy()
+    {
+        Clear();
+    }
+
+    public virtual double Calibrate(Mat mat)
+    {
+        var repError = -1.0;
+        var points = new MatOfPoint2f();
+        var patternSize = new Size((int)segmentX, (int)segmentY);
+
         var found = false;
-        found = Calib3d.findChessboardCorners(mat, patternSize, points, Calib3d.CALIB_CB_ADAPTIVE_THRESH | Calib3d.CALIB_CB_FAST_CHECK | Calib3d.CALIB_CB_NORMALIZE_IMAGE);
+        switch (boardType)
+        {
+            case BoardType.ChessBoard:
+                found = Calib3d.findChessboardCorners(mat, patternSize, points, Calib3d.CALIB_CB_ADAPTIVE_THRESH | Calib3d.CALIB_CB_FAST_CHECK | Calib3d.CALIB_CB_NORMALIZE_IMAGE);
+
+                break;
+            case BoardType.CirclesGrid:
+                found = Calib3d.findCirclesGrid(mat, patternSize, points, Calib3d.CALIB_CB_SYMMETRIC_GRID);
+                break;
+            case BoardType.AsymmetricCirclesGrid:
+                found = Calib3d.findCirclesGrid(mat, patternSize, points, Calib3d.CALIB_CB_ASYMMETRIC_GRID);
+                break;
+        }
         
+
         if (found)
         {
-            Imgproc.cornerSubPix(mat, points, new Size(5, 5), new Size(-1, -1), new TermCriteria(TermCriteria.EPS + TermCriteria.COUNT, 30, 0.1));
+            if (boardType == BoardType.ChessBoard)
+            {
+
+                Imgproc.cornerSubPix(mat, points, new Size(5, 5), new Size(-1, -1), new TermCriteria(TermCriteria.EPS + TermCriteria.COUNT, 30, 0.1));
+            }
             imagePoints.Add(points);
             allImgs.Add(mat);
         }
@@ -184,52 +166,38 @@ public class Calibrator : MonoBehaviour
             //mat.Dispose();
             if (points != null)
                 points.Dispose();
-            return -1;
+            return repError;
         }
 
         if (imagePoints.Count < 1)
         {
             Debug.Log("Not enough points for calibration.");
-            return -1;
+            return repError;
         }
         else
         {
             var objectPoint = new MatOfPoint3f(new Mat(imagePoints[0].rows(), 1, CvType.CV_32FC3));
-            CalcChessboardCorners(patternSize, squareSize, objectPoint);
+            CalcCorners(patternSize, squareSize, objectPoint);
 
             var objectPoints = new List<Mat>();
             for (int i = 0; i < imagePoints.Count; ++i)
             {
                 objectPoints.Add(objectPoint);
             }
-            print(objectPoints);
-            print(imagePoints);
-            if (isFisheye)
-            {
-                r = Calib3d.fisheye_calibrate(objectPoints, imagePoints, mat.size(), cameraMatrix, distCoeffs, rvecs, tvecs);
-            }
-            else
-            {
-                r = Calib3d.calibrateCamera(objectPoints, imagePoints, mat.size(), cameraMatrix, distCoeffs, rvecs, tvecs, 0);
-            }
-            CalibrationEvent?.Invoke(r);
-
-            //for (var i = 0; i < objectPoints.Count; i++)
-            //{
-            //    Calib3d.projectPoints(objectPoints[i], rvecs[i], rvecs[i], cameraMatrix, distCoeffs);
-                
-            //}
+            repError = Calib3d.calibrateCamera(objectPoints, imagePoints, mat.size(), cameraMatrix, distCoeffs, rvecs, tvecs);
+            CalibrationEvent?.Invoke(repError);
+            objectPoint.Dispose();
         }
 
-        print("-----calibrate-----");
-        print("repErr: " + r);
-        print("camMatrix: " + cameraMatrix.dump());
-        print("distCoeffs: " + distCoeffs.dump());
+        Debug.Log("-----calibrate-----");
+        Debug.Log("repErr: " + repError);
+        Debug.Log("camMatrix: " + cameraMatrix.dump());
+        Debug.Log("distCoeffs: " + distCoeffs.dump());
 
-        return r;
+        return repError;
     }
 
-    private void CalcChessboardCorners(Size patternSize, float squareSize, MatOfPoint3f corners)
+    protected virtual void CalcCorners(Size patternSize, float squareSize, MatOfPoint3f corners)
     {
         if ((int)(patternSize.width * patternSize.height) != corners.rows())
         {
@@ -242,39 +210,65 @@ public class Calibrator : MonoBehaviour
         int width = (int)patternSize.width;
         int height = (int)patternSize.height;
 
-        for (int i = 0; i < height; ++i)
+        switch (boardType)
         {
-            for (int j = 0; j < width; ++j)
-            {
-                cornersArr[(i * width * cn) + (j * cn)] = j * squareSize;
-                cornersArr[(i * width * cn) + (j * cn) + 1] = i * squareSize;
-                cornersArr[(i * width * cn) + (j * cn) + 2] = 0;
-            }
+            case BoardType.ChessBoard:
+            case BoardType.CirclesGrid:
+                for (int i = 0; i < height; ++i)
+                {
+                    for (int j = 0; j < width; ++j)
+                    {
+                        cornersArr[(i * width * cn) + (j * cn)] = j * squareSize;
+                        cornersArr[(i * width * cn) + (j * cn) + 1] = i * squareSize;
+                        cornersArr[(i * width * cn) + (j * cn) + 2] = 0;
+                    }
+                }
+                corners.put(0, 0, cornersArr);
+
+                break;
+            case BoardType.AsymmetricCirclesGrid:
+                for (int i = 0; i < height; ++i)
+                {
+                    for (int j = 0; j < width; ++j)
+                    {
+                        cornersArr[(i * width * cn) + (j * cn)] = (2 * j + i % 2) * squareSize;
+                        cornersArr[(i * width * cn) + (j * cn) + 1] = i * squareSize;
+                        cornersArr[(i * width * cn) + (j * cn) + 2] = 0;
+                    }
+                }
+                corners.put(0, 0, cornersArr);
+
+                break;
         }
-        corners.put(0, 0, cornersArr);
+
     }
-
-
-    public void Draw(Mat grayMat, Mat rgbMat)
+    public virtual void Draw(Mat src, Mat dst)
     {
-        MatOfPoint2f points = new MatOfPoint2f();
-        if (AppConfigManager.Instance.Config.calibrationConfig.DrawCorner)
+        var points = new MatOfPoint2f();
+        var patternSize = new Size((int)segmentX, (int)segmentY);
+
+        var found = false;
+        switch (boardType)
         {
-            var found = false;
+            case BoardType.ChessBoard:
+                found = Calib3d.findChessboardCorners(src, patternSize, points, Calib3d.CALIB_CB_ADAPTIVE_THRESH | Calib3d.CALIB_CB_FAST_CHECK | Calib3d.CALIB_CB_NORMALIZE_IMAGE);
 
-            found = Calib3d.findChessboardCorners(grayMat, new Size(segmentX, segmentY), points, Calib3d.CALIB_CB_ADAPTIVE_THRESH | Calib3d.CALIB_CB_FAST_CHECK | Calib3d.CALIB_CB_NORMALIZE_IMAGE);
-
-            if (found)
-            {
-                Imgproc.cornerSubPix(grayMat, points, new Size(5, 5), new Size(-1, -1), new TermCriteria(TermCriteria.EPS + TermCriteria.COUNT, 30, 0.1));
-                Calib3d.drawChessboardCorners(rgbMat, new Size((int)segmentX, (int)segmentY), points, found);
-            }
+                break;
+            case BoardType.CirclesGrid:
+                found = Calib3d.findCirclesGrid(src, patternSize, points, Calib3d.CALIB_CB_SYMMETRIC_GRID);
+                break;
+            case BoardType.AsymmetricCirclesGrid:
+                found = Calib3d.findCirclesGrid(src, patternSize, points, Calib3d.CALIB_CB_ASYMMETRIC_GRID);
+                break;
         }
-    }
 
+        if (found)
+        {
+            if (boardType == BoardType.ChessBoard)
+                Imgproc.cornerSubPix(src, points, new Size(5, 5), new Size(-1, -1), new TermCriteria(TermCriteria.EPS + TermCriteria.COUNT, 30, 0.1));
+            
+            Calib3d.drawChessboardCorners(dst, patternSize, points, found);
+        }
 
-    private void OnDestroy()
-    {
-        Clear();
     }
 }
