@@ -164,6 +164,8 @@ MonoBehaviour:
   fileName: tempCalib.json
   autoSave: 0
   interval: 0
+  draw: 0
+  renderer: {fileID: 0}
 --- !u!114 &311666953
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -331,8 +333,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 825f4e69c9f35b84a8277f71cf5a5e05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  segmentX: 7
-  segmentY: 4
+  segmentX: 9
+  segmentY: 6
   squareSize: 1
   boardType: 1
 --- !u!82 &1124805758

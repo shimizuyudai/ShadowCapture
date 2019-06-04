@@ -384,7 +384,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c5e9ef1b18599c4bac6d2adb523d6c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fileName: testCalib.json
+  fileName: intrinsic.json
   videoCaptureController: {fileID: 2034921980}
   isFisheye: 0
 --- !u!4 &876038653
