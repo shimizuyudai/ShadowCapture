@@ -192,9 +192,11 @@ MonoBehaviour:
   shadowCaptureSetting: {fileID: 11400000, guid: f2957ca25725d0048b083b81f71e70e1,
     type: 2}
   differenceImageFilter: {fileID: 1154593077}
-  thresholdImageFilter: {fileID: 1154593075}
+  differenceThresholdImageFilter: {fileID: 1154593075}
+  thresholdImageFilter: {fileID: 321791155}
   noiseReductionHeatmapFilter: {fileID: 1154593085}
   heatmapFilter: {fileID: 204965503}
+  flipImageFilter: {fileID: 1154593082}
 --- !u!114 &57172066
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -427,6 +429,53 @@ MonoBehaviour:
   IsSelfFilter: 0
   addRate: 0.08
   subRate: 0.06
+--- !u!1 &321791153
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 321791154}
+  - component: {fileID: 321791155}
+  m_Layer: 0
+  m_Name: Threshold
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &321791154
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 321791153}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1154593074}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &321791155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 321791153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71a75f18bb33afc498e95847999f66c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shader: {fileID: 4800000, guid: d543ebf216d24c149b0da5e1d84f1fa8, type: 3}
+  id: 15
+  IsSelfFilter: 0
+  threshold: 0.3
 --- !u!1 &362246731
 GameObject:
   m_ObjectHideFlags: 0
@@ -1016,16 +1065,13 @@ GameObject:
   - component: {fileID: 1154593076}
   - component: {fileID: 1154593073}
   - component: {fileID: 1154593081}
-  - component: {fileID: 1154593084}
   - component: {fileID: 1154593077}
   - component: {fileID: 1154593075}
   - component: {fileID: 1154593079}
   - component: {fileID: 1154593080}
-  - component: {fileID: 1154593078}
   - component: {fileID: 1154593083}
   - component: {fileID: 1154593082}
   - component: {fileID: 1154593085}
-  - component: {fileID: 1154593086}
   m_Layer: 0
   m_Name: Filter
   m_TagString: Untagged
@@ -1049,15 +1095,14 @@ MonoBehaviour:
   IsFilteringOnRenderImage: 0
   imageFilters:
   - {fileID: 1154593081}
-  - {fileID: 1154593084}
   - {fileID: 1154593077}
   - {fileID: 1154593075}
   - {fileID: 1154593079}
   - {fileID: 1154593080}
-  - {fileID: 1154593078}
   - {fileID: 1154593083}
   - {fileID: 1154593082}
   - {fileID: 1154593085}
+  - {fileID: 321791155}
 --- !u!4 &1154593074
 Transform:
   m_ObjectHideFlags: 0
@@ -1068,7 +1113,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 321791154}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1085,7 +1131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shader: {fileID: 4800000, guid: d543ebf216d24c149b0da5e1d84f1fa8, type: 3}
-  id: 4
+  id: 2
   IsSelfFilter: 0
   threshold: 0.3
 --- !u!114 &1154593076
@@ -1115,25 +1161,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shader: {fileID: 4800000, guid: dd65f92537290ba43885a83536d5b213, type: 3}
-  id: 3
+  id: 1
   IsSelfFilter: 0
   monotone: 1
---- !u!114 &1154593078
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1154593072}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a20a1f2a91033243942a0dad754c005, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shader: {fileID: 4800000, guid: b0f50976da05af34e88943d4ea7c32f2, type: 3}
-  id: 7
-  IsSelfFilter: 0
-  repeat: 5
 --- !u!114 &1154593079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1147,9 +1177,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shader: {fileID: 4800000, guid: 01c42546f1925a84daaf7c486a1af9c1, type: 3}
-  id: 5
+  id: 3
   IsSelfFilter: 0
-  repeat: 1
+  repeat: 3
 --- !u!114 &1154593080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1163,9 +1193,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shader: {fileID: 4800000, guid: 09dbeeb40d3597f4d90393e5594e26ee, type: 3}
-  id: 6
+  id: 4
   IsSelfFilter: 0
-  repeat: 1
+  repeat: 3
 --- !u!114 &1154593081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1211,25 +1241,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shader: {fileID: 4800000, guid: 0df2a504ad6f56644a63918495902fbe, type: 3}
-  id: 10
+  id: 5
   IsSelfFilter: 0
   repeat: 3
---- !u!114 &1154593084
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1154593072}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a20a1f2a91033243942a0dad754c005, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shader: {fileID: 4800000, guid: 767cf2987e30a234aaa270967f7ce657, type: 3}
-  id: 1
-  IsSelfFilter: 0
-  repeat: 1
 --- !u!114 &1154593085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1247,22 +1261,6 @@ MonoBehaviour:
   IsSelfFilter: 0
   addRate: 0.5
   subRate: 0.4
---- !u!114 &1154593086
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1154593072}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71a75f18bb33afc498e95847999f66c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shader: {fileID: 4800000, guid: d543ebf216d24c149b0da5e1d84f1fa8, type: 3}
-  id: 15
-  IsSelfFilter: 0
-  threshold: 0.3
 --- !u!1 &1271764721
 GameObject:
   m_ObjectHideFlags: 0

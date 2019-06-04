@@ -43,14 +43,6 @@ public class VideoCaptureCalibrator : MonoBehaviour
     private void Awake()
     {
         videoCaptureController.ChangeTextureEvent += VideoCaptureController_ChangeTextureEvent;
-        videoCaptureController.RefreshTextureEvent += VideoCaptureController_RefreshTextureEvent;
-    }
-
-    private void VideoCaptureController_RefreshTextureEvent()
-    {
-        Imgproc.cvtColor(videoCaptureController.BGRMat, grayMat, Imgproc.COLOR_BGR2GRAY);
-        Imgproc.cvtColor(grayMat, rgbMat, Imgproc.COLOR_GRAY2RGB);
-        //calibrator.Draw(grayMat, rgbMat);
     }
 
     private void VideoCaptureController_ChangeTextureEvent(Texture texture)
@@ -60,14 +52,14 @@ public class VideoCaptureCalibrator : MonoBehaviour
 
     void Init()
     {
-        Clear();
+        Close();
         this.texture = new Texture2D(videoCaptureController.BGRMat.cols(), videoCaptureController.BGRMat.rows(), TextureFormat.RGB24, false);
         grayMat = new Mat(videoCaptureController.BGRMat.rows(), videoCaptureController.BGRMat.cols(), CvType.CV_8UC1);
         rgbMat = new Mat(videoCaptureController.BGRMat.rows(), videoCaptureController.BGRMat.cols(), CvType.CV_8UC3);
         calibrator.Init(videoCaptureController.BGRMat);
     }
-    
-    void Clear()
+
+    private void Close()
     {
         if (grayMat != null)
         {
@@ -79,23 +71,29 @@ public class VideoCaptureCalibrator : MonoBehaviour
             rgbMat.Dispose();
             grayMat = null;
         }
-        if
-            (texture != null)
+        if (texture != null)
         {
             DestroyImmediate(texture);
             texture = null;
         }
     }
 
+    void Clear()
+    {
+        calibrator.Clear();
+        calibrator.Setup();
+    }
+
     public bool Calibrate()
     {
-        print("test");
+        //Imgproc.cvtColor(videoCaptureController.BGRMat, grayMat, Imgproc.COLOR_BGR2GRAY);
+        //Imgproc.cvtColor(grayMat, rgbMat, Imgproc.COLOR_GRAY2RGB);
         var result = false;
         Imgproc.cvtColor(videoCaptureController.BGRMat, grayMat, Imgproc.COLOR_BGR2GRAY);
         Core.flip(grayMat, grayMat, 0);
         var r = calibrator.Calibrate(grayMat);
 
-        result = r>= 0.0;
+        result = r >= 0.0;
         if (result)
         {
             audioSource.PlayOneShot(captureClip);
@@ -117,6 +115,10 @@ public class VideoCaptureCalibrator : MonoBehaviour
         else if (Input.GetKeyDown(saveKey))
         {
             Save();
+        }
+        else if (Input.GetKeyDown(clearKey))
+        {
+            Clear();
         }
     }
 

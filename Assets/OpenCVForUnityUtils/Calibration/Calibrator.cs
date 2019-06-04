@@ -158,7 +158,7 @@ public class Calibrator:MonoBehaviour
                 Imgproc.cornerSubPix(mat, points, new Size(5, 5), new Size(-1, -1), new TermCriteria(TermCriteria.EPS + TermCriteria.COUNT, 30, 0.1));
             }
             imagePoints.Add(points);
-            allImgs.Add(mat);
+            //allImgs.Add(mat);
         }
         else
         {

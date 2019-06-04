@@ -3188,6 +3188,11 @@ PrefabInstance:
       propertyPath: settingFileName
       value: correction.json
       objectReference: {fileID: 0}
+    - target: {fileID: 389174996671887444, guid: a4798bc4278b9f7478c7dd9649cf357c,
+        type: 3}
+      propertyPath: saveKey
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 389174995492735396, guid: a4798bc4278b9f7478c7dd9649cf357c,
         type: 3}
       propertyPath: camera
@@ -3404,11 +3409,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 290701906}
     m_Modifications:
-    - target: {fileID: 2485924183702302038, guid: 14a11d057cb68c64c8bf015b7d30bb9d,
-        type: 3}
-      propertyPath: m_Name
-      value: Slider
-      objectReference: {fileID: 0}
     - target: {fileID: 2406354442455478238, guid: 14a11d057cb68c64c8bf015b7d30bb9d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3514,6 +3514,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 2485924183702302038, guid: 14a11d057cb68c64c8bf015b7d30bb9d,
+        type: 3}
+      propertyPath: m_Name
+      value: Slider
+      objectReference: {fileID: 0}
     - target: {fileID: 2406533599331051280, guid: 14a11d057cb68c64c8bf015b7d30bb9d,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -3548,11 +3553,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 290701906}
     m_Modifications:
-    - target: {fileID: 5641098158045713314, guid: 2c076f998ab6b454c80e4aba0b123f3a,
-        type: 3}
-      propertyPath: m_Name
-      value: Dropdown
-      objectReference: {fileID: 0}
     - target: {fileID: 5641098158045713313, guid: 2c076f998ab6b454c80e4aba0b123f3a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3657,6 +3657,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5641098158045713314, guid: 2c076f998ab6b454c80e4aba0b123f3a,
+        type: 3}
+      propertyPath: m_Name
+      value: Dropdown
       objectReference: {fileID: 0}
     - target: {fileID: 5641098159627574277, guid: 2c076f998ab6b454c80e4aba0b123f3a,
         type: 3}
@@ -4179,11 +4184,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 290701906}
     m_Modifications:
-    - target: {fileID: 8899439648861726388, guid: 79f8dcc2f7715b84a99961dd0dbf71d6,
-        type: 3}
-      propertyPath: m_Name
-      value: Image
-      objectReference: {fileID: 0}
     - target: {fileID: 8899439648861726391, guid: 79f8dcc2f7715b84a99961dd0dbf71d6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4288,6 +4288,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8899439648861726388, guid: 79f8dcc2f7715b84a99961dd0dbf71d6,
+        type: 3}
+      propertyPath: m_Name
+      value: Image
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 79f8dcc2f7715b84a99961dd0dbf71d6, type: 3}

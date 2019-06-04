@@ -10,12 +10,18 @@ public class ShadowCaptureSettingsManager : MonoBehaviour
     [SerializeField]
     DifferenceImageFilter differenceImageFilter;
     [SerializeField]
+    ThresholdImageFilter differenceThresholdImageFilter;
+
+    [SerializeField]
     ThresholdImageFilter thresholdImageFilter;
+
     [SerializeField]
     HeatmapFilter noiseReductionHeatmapFilter;
 
     [SerializeField]
     HeatmapFilter heatmapFilter;
+    [SerializeField]
+    FlipImageFilter flipImageFilter;
 
 
     // Start is called before the first frame update
@@ -26,11 +32,12 @@ public class ShadowCaptureSettingsManager : MonoBehaviour
 
     private void ShadowCaptureSetting_UpdateEvent()
     {
-        thresholdImageFilter.threshold = shadowCaptureSetting.threshold;
+        differenceThresholdImageFilter.threshold = shadowCaptureSetting.differenceThreshold;
         noiseReductionHeatmapFilter.addRate = shadowCaptureSetting.addRate;
         noiseReductionHeatmapFilter.subRate = shadowCaptureSetting.subRate;
         heatmapFilter.addRate = shadowCaptureSetting.heatmapAddRate;
         heatmapFilter.subRate = shadowCaptureSetting.heatmapSubRate;
-
+        flipImageFilter.IsFlipX = shadowCaptureSetting.flipX;
+        thresholdImageFilter.threshold = shadowCaptureSetting.threshold;
     }
 }

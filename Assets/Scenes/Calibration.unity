@@ -295,10 +295,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dad1d93d8eef6c4b929d094089bb109, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  calibrateKey: 97
-  saveKey: 115
-  autoCaptureToggleKey: 100
-  clearKey: 102
+  calibrateKey: 32
+  saveKey: 13
+  autoCaptureToggleKey: 97
+  clearKey: 99
   autoCaptureInterval: 3
   autoCaptureNumber: 15
   audioSource: {fileID: 1124805758}

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 public class ShadowCaptureSetting : EasyUGUISetting
 {
     [Range(0, 1)]
-    public float threshold;
+    public float differenceThreshold;
     [Range(0, 1)]
     public float addRate;
     [Range(0, 1)]
@@ -16,4 +16,7 @@ public class ShadowCaptureSetting : EasyUGUISetting
     public float heatmapAddRate;
     [Range(0, 1)]
     public float heatmapSubRate;
+    public bool flipX;
+    [Range(0, 1)]
+    public float threshold;
 }

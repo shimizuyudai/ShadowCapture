@@ -54,5 +54,3 @@ MonoBehaviour:
     SceneName: Calibration
   - KeyCode: 116
     SceneName: UndistortedPreview
-  - KeyCode: 121
-    SceneName: Capture
