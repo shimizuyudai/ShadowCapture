@@ -23,11 +23,39 @@ public class ShadowCaptureSettingsManager : MonoBehaviour
     [SerializeField]
     FlipImageFilter flipImageFilter;
 
+    [SerializeField]
+    KeyCode saveKey, switchModeKey;
+    [SerializeField]
+    GameObject bezierwarpObject;
+
+    [SerializeField]
+    BezierWarpPlaneController bezierWarpPlaneController;
+
+    [SerializeField]
+    ImageFilterGroupExecutor filterGroupExecutor;
+
+    [SerializeField]
+    Camera[] cameras;
+
+    [SerializeField]
+    TextureHolderBase[] textureHolders;
+
+    int mode;
+
+    [SerializeField]
+    private bool useBezierWarp;
+
+    [SerializeField]
+    KeyCode captureKey;
+
+    [SerializeField]
+    float delay;
 
     // Start is called before the first frame update
     void Awake()
     {
         shadowCaptureSetting.UpdateEvent += ShadowCaptureSetting_UpdateEvent;
+        SetMode(0);
     }
 
     private void ShadowCaptureSetting_UpdateEvent()
@@ -39,5 +67,73 @@ public class ShadowCaptureSettingsManager : MonoBehaviour
         heatmapFilter.subRate = shadowCaptureSetting.heatmapSubRate;
         flipImageFilter.IsFlipX = shadowCaptureSetting.flipX;
         thresholdImageFilter.threshold = shadowCaptureSetting.threshold;
+        if (shadowCaptureSetting.useBezierWarp != this.useBezierWarp)
+        {
+            OnChangedUseBezierWarp(shadowCaptureSetting.useBezierWarp);
+        }
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(switchModeKey))
+        {
+            ToggleMode();
+        }
+
+        if (Input.GetKeyDown(captureKey))
+        {
+            Capture();
+        }
+    }
+
+    private void OnChangedUseBezierWarp(bool useBezierWarp)
+    {
+        filterGroupExecutor.textureHolder = textureHolders[useBezierWarp ? 1 : 0];
+        if (!useBezierWarp)
+        {
+            SetMode(0);
+        }
+        this.useBezierWarp = useBezierWarp;
+    }
+
+    private void ToggleMode()
+    {
+        if (!useBezierWarp) return;
+        mode++;
+        if (mode >= cameras.Length)
+        {
+            mode = 0;
+        }
+        SetMode(mode);
+    }
+
+    private void SetMode(int mode)
+    {
+        for (var i = 0; i < cameras.Length; i++)
+        {
+            cameras[i].enabled = i == mode;
+        }
+        bezierWarpPlaneController.enabled = mode == 1 ? true : false;
+        this.mode = mode;
+    }
+    
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        StartCoroutine(InitializeRoutine());
+    }
+
+    void Capture()
+    {
+        heatmapFilter.Clear();
+        differenceImageFilter.Capture();
+    }
+
+    IEnumerator InitializeRoutine()
+    {
+        yield return new WaitForSeconds(delay);
+        Capture();
+
     }
 }

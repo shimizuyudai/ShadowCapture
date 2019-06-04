@@ -19,4 +19,6 @@ public class ShadowCaptureSetting : EasyUGUISetting
     public bool flipX;
     [Range(0, 1)]
     public float threshold;
+    [SerializeField]
+    public bool useBezierWarp;
 }

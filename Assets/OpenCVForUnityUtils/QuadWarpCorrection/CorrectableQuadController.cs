@@ -28,6 +28,9 @@ public class CorrectableQuadController : MonoBehaviour
     int segmentX = 20;
     [SerializeField]
     int segmentY = 20;
+    [SerializeField]
+    bool fitToAngleOfView;
+
     public Vector2 Size
     {
         get;
@@ -55,8 +58,7 @@ public class CorrectableQuadController : MonoBehaviour
 
     private void Restore(QuadCorrectionSetting setting)
     {
-        var camSize = new Vector2(cam.orthographicSize * 2f * cam.aspect, cam.orthographicSize * 2f);
-        Size = EMath.GetShrinkFitSize(this.destSize, camSize);
+        Size = fitToAngleOfView ? EMath.GetShrinkFitSize(this.destSize, new Vector2(cam.orthographicSize * 2f * cam.aspect, cam.orthographicSize * 2f)) : destSize;
         //print("size : " + Size);
         var lt = new Vector2(-Size.x / 2f, Size.y / 2f);
         var rt = new Vector2(Size.x / 2f, Size.y / 2f);

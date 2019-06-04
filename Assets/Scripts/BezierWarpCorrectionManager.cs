@@ -30,7 +30,17 @@ public class BezierWarpCorrectionManager : MonoBehaviour
 
     private void OnRenderObject()
     {
-        DrawAngleOfView();
+        if ((Camera.current.cullingMask & (1 << this.gameObject.layer)) > 0)
+        {
+            DrawAngleOfView();
+        }
+#if UNITY_EDITOR
+        if (Camera.current == UnityEditor.SceneView.lastActiveSceneView.camera)
+        {
+            DrawAngleOfView();
+        }
+#endif
+        
     }
 
 

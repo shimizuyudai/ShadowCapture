@@ -164,7 +164,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 1
+  orthographic size: 4.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -247,6 +247,7 @@ MonoBehaviour:
   correctableQuad: {fileID: 576750247}
   segmentX: 20
   segmentY: 20
+  fitToAngleOfView: 1
 --- !u!114 &576750247
 MonoBehaviour:
   m_ObjectHideFlags: 0
