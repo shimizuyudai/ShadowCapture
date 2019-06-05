@@ -45,8 +45,8 @@ public class VideoImageUndisotorter : TextureHolderBase
         mapY = new Mat();
         newCameraMatrix = new Mat();
         LoadSettings();
-        videoCaptureController.ChangeTextureEvent += VideoCaptureController_ChangeTextureEvent;
-        videoCaptureController.RefreshTextureEvent += VideoCaptureController_RefreshTextureEvent;
+        videoCaptureController.InitializedEvent += VideoCaptureController_ChangeTextureEvent;
+        videoCaptureController.UpdatedEvent += VideoCaptureController_RefreshTextureEvent;
     }
 
     private void VideoCaptureController_RefreshTextureEvent()

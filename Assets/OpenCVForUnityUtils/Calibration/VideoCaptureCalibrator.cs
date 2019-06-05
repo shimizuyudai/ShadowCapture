@@ -42,7 +42,7 @@ public class VideoCaptureCalibrator : MonoBehaviour
 
     private void Awake()
     {
-        videoCaptureController.ChangeTextureEvent += VideoCaptureController_ChangeTextureEvent;
+        videoCaptureController.InitializedEvent += VideoCaptureController_ChangeTextureEvent;
     }
 
     private void VideoCaptureController_ChangeTextureEvent(Texture texture)
