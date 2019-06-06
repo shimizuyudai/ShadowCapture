@@ -50,7 +50,7 @@ You can check the trimmed image.
 |:-|:-|
 | Space | Calibrate | 
 | Return | Save | 
-| Tab | ToggleAutoCaputre |
+| Tab | ToggleAutoCaputure |
 | BackSpace | Clear | 
 | C | CaptureFrame | 
 

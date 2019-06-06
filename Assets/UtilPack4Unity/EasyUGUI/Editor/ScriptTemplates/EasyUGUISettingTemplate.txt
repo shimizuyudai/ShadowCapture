@@ -1,0 +1,10 @@
+using UnityEngine;
+using UnityEditor;
+using System.Collections;
+using System.Collections.Generic;
+
+[CreateAssetMenu(fileName = "ClassName.asset", menuName = "Custom/Create ClassName")]
+public class ClassName : EasyUGUISetting
+{
+    
+}

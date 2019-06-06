@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 784c0a0616e4fc84f8b1bfa542f28d6e, type: 3}
+  m_Name: EasyUGUIElementSettings
+  m_EditorClassIdentifier: 
+  pannelPrefab: {fileID: 1225039287349530532, guid: d4e077377f6e56f4291121dfe57178c1,
+    type: 3}
+  floatSliderPrefab: {fileID: 7332160234300300478, guid: 2fece783da866c14dac435531d15f65f,
+    type: 3}
+  intSliderPrefab: {fileID: 3328287305117866752, guid: 8ed450c9689edcd4c9f9579f3751ac56,
+    type: 3}
+  togglePrefab: {fileID: 3165194211336009487, guid: 1ca156994bff02047921d6586a0ad1e8,
+    type: 3}
+  intInputFieldPrefab: {fileID: 833447937921939724, guid: 0e4cf8ea8e2bf8d42ab6302e1d8b1018,
+    type: 3}
+  floatInputFieldPrefab: {fileID: 4694306023527298636, guid: 7c28284ce13891f449a9bf07b31558ad,
+    type: 3}
+  textInputFieldPrefab: {fileID: 8315020243690520822, guid: 89e783af91dc82c4db318994adadee61,
+    type: 3}
+  multilineTextInputFieldPrefab: {fileID: 1604709586689681976, guid: 58fa19ab8721df040a01b1c7ead5fac9,
+    type: 3}
+  dropdownPrefab: {fileID: 9167912533574928305, guid: 8c360552bc269a14fb31a334fb64117e,
+    type: 3}
