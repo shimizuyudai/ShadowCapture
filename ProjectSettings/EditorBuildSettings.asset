@@ -16,7 +16,7 @@ EditorBuildSettings:
     guid: a47903174ca3f624b9f33680dfdc4f26
   - enabled: 1
     path: Assets/Scenes/Calibration.unity
-    guid: 17d8d977419172544895f7cdccc713c3
+    guid: 61c4200d472efdc4b868ed0eab5a25a7
   - enabled: 1
     path: Assets/Scenes/UndistortedPreview.unity
     guid: a19413902371e6c448515573e78caa86
