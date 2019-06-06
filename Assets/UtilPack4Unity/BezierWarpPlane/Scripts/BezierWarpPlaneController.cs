@@ -347,7 +347,9 @@ public class BezierWarpPlaneController : MonoBehaviour
         {
             var p = new ParticleSystem.Particle();
 
-            p.position = point.position;
+            Vector3 position = point.position;
+            position.z = this.transform.position.z - 1;
+            p.position = position;
             p.startSize = controlPointSize;
 
             switch (point.type)

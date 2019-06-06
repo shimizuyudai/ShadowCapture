@@ -653,15 +653,18 @@ MonoBehaviour:
   saveKey: 13
   autoCaptureToggleKey: 9
   clearKey: 8
-  autoCaptureInterval: 3
-  autoCaptureNumber: 15
   audioSource: {fileID: 1091501618}
-  countSound: {fileID: 0}
-  calibrationSound: {fileID: 0}
-  errorSound: {fileID: 0}
+  countSound: {fileID: 8300000, guid: ba9697c89407d244084053c94bbf4009, type: 3}
+  calibrationSound: {fileID: 8300000, guid: 7409d4b595d147649bf4abad070bf1b5, type: 3}
+  errorSound: {fileID: 8300000, guid: e87b6027996669846aa16cca8f32aee9, type: 3}
+  completeSound: {fileID: 8300000, guid: 838a1a25b847e824ca25ecb8b01c4f30, type: 3}
   videoCaptureController: {fileID: 710384048}
   calibrator: {fileID: 1091501616}
   fileName: intrinsic.json
+  autoCalibrationSettingFileName: autoCalibrationSetting.json
+  autoCalibrationSetting:
+    Interval: 3
+    NumberOfMaxImage: 15
 --- !u!82 &1091501618
 AudioSource:
   m_ObjectHideFlags: 0
@@ -870,9 +873,78 @@ MonoBehaviour:
   setting: {fileID: 11400000, guid: 1a44241ed25f0a64e8f86d598ce85711, type: 2}
   calibrator: {fileID: 1091501616}
   easyUGUIManager: {fileID: 453776693}
-  pannelToggleKey: 116
+  pannelToggleKey: 122
   temporaryText: {fileID: 920303015}
   drawCornerObject: {fileID: 752497122}
+--- !u!1001 &1821533999
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 7233839972362148646, guid: 46b0e1b7d768250448f8d72a2f64d839,
+        type: 3}
+      propertyPath: m_Name
+      value: KeySceneController
+      objectReference: {fileID: 0}
+    - target: {fileID: 7233839972362148644, guid: 46b0e1b7d768250448f8d72a2f64d839,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7233839972362148644, guid: 46b0e1b7d768250448f8d72a2f64d839,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7233839972362148644, guid: 46b0e1b7d768250448f8d72a2f64d839,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7233839972362148644, guid: 46b0e1b7d768250448f8d72a2f64d839,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7233839972362148644, guid: 46b0e1b7d768250448f8d72a2f64d839,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7233839972362148644, guid: 46b0e1b7d768250448f8d72a2f64d839,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7233839972362148644, guid: 46b0e1b7d768250448f8d72a2f64d839,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7233839972362148644, guid: 46b0e1b7d768250448f8d72a2f64d839,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7233839972362148644, guid: 46b0e1b7d768250448f8d72a2f64d839,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7233839972362148644, guid: 46b0e1b7d768250448f8d72a2f64d839,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7233839972362148644, guid: 46b0e1b7d768250448f8d72a2f64d839,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 46b0e1b7d768250448f8d72a2f64d839, type: 3}
 --- !u!1 &1851502733
 GameObject:
   m_ObjectHideFlags: 0

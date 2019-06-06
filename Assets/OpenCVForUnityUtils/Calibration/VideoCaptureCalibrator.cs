@@ -9,21 +9,17 @@ using OpenCVForUnity.UnityUtils;
 using OpenCVForUnity.Calib3dModule;
 using UtilPack4Unity;
 
+[RequireComponent(typeof(AudioSource))]
 public class VideoCaptureCalibrator : MonoBehaviour
 {
     [SerializeField]
     KeyCode calibrateKey, saveKey, autoCaptureToggleKey, clearKey;
 
     [SerializeField]
-    int autoCaptureInterval = 3;
-    [SerializeField]
-    int autoCaptureNumber = 15;
-
-    [SerializeField]
     AudioSource audioSource;
 
     [SerializeField]
-    AudioClip countSound, calibrationSound, errorSound;
+    AudioClip countSound, calibrationSound, errorSound, completeSound;
 
     IEnumerator autoCaptureRoutine;
 
@@ -35,11 +31,36 @@ public class VideoCaptureCalibrator : MonoBehaviour
 
     Mat grayMat;
 
+    [Header("AutoCalibration")]
     [SerializeField]
     string fileName;
 
+    [SerializeField]
+    string autoCalibrationSettingFileName;
+    [SerializeField]
+    AutoCalibrationSetting autoCalibrationSetting;
+
+    void LoadAutoCalibrationSetting()
+    {
+        var setting = IOHandler.LoadJson<AutoCalibrationSetting>(autoCalibrationSettingFileName);
+        if (setting == null) return;
+        this.autoCalibrationSetting = setting;
+    }
+
+    [ContextMenu("SaveAutoCalibrationSetting")]
+    void SaveAutoCalibrationSetting()
+    {
+        IOHandler.SaveJson(IOHandler.IntoStreamingAssets(autoCalibrationSettingFileName), this.autoCalibrationSetting);
+    }
+
+    private void Reset()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
     private void Awake()
     {
+        LoadAutoCalibrationSetting();
         videoCaptureController.TextureInitializedEvent += VideoCaptureController_ChangeTextureEvent;
         calibrator.CalibrationEvent += Calibrator_CalibrationEvent;
         calibrator.ErrorEvent += Calibrator_ErrorEvent;
@@ -57,7 +78,6 @@ public class VideoCaptureCalibrator : MonoBehaviour
 
     private void PlaySound(AudioClip audioClip)
     {
-        return;
         audioSource.PlayOneShot(audioClip);
     }
 
@@ -84,6 +104,7 @@ public class VideoCaptureCalibrator : MonoBehaviour
 
     void Clear()
     {
+        StopAutoCalibration();
         calibrator.Clear();
         calibrator.Setup();
     }
@@ -130,6 +151,15 @@ public class VideoCaptureCalibrator : MonoBehaviour
         }
     }
 
+    void StopAutoCalibration()
+    {
+        if (autoCaptureRoutine != null)
+        {
+            StopCoroutine(autoCaptureRoutine);
+            autoCaptureRoutine = null;
+        }
+    }
+
     void Save()
     {
         calibrator.Save(IOHandler.IntoStreamingAssets(fileName));
@@ -138,22 +168,30 @@ public class VideoCaptureCalibrator : MonoBehaviour
     IEnumerator AutoCalibrateRoutine()
     {
         var cnt = 0;
-        while (cnt < autoCaptureNumber)
+        while (cnt < autoCalibrationSetting.NumberOfMaxImage)
         {
-            for (var i = 0; i <= autoCaptureInterval; i++)
+            for (var i = 0; i <= autoCalibrationSetting.Interval; i++)
             {
-                if (i >= autoCaptureInterval)
+                if (i >= autoCalibrationSetting.Interval)
                 {
                     if (Calibrate())
                         cnt++;
-
+                    yield return new WaitForSeconds(1);
                     break;
                 }
                 PlaySound(countSound);
                 yield return new WaitForSeconds(1);
             }
-            yield return new WaitForSeconds(1);
         }
+        PlaySound(completeSound);
+        yield break;
+    }
+
+    [Serializable]
+    public class AutoCalibrationSetting
+    {
+        public int Interval;
+        public int NumberOfMaxImage;
     }
 }
 

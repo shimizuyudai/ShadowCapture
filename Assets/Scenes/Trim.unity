@@ -164,6 +164,12 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!23 &288309393 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 389174995492735399, guid: a4798bc4278b9f7478c7dd9649cf357c,
+    type: 3}
+  m_PrefabInstance: {fileID: 389174995196311321}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &290701905
 GameObject:
   m_ObjectHideFlags: 0
@@ -3167,6 +3173,31 @@ PrefabInstance:
       propertyPath: captureCamera
       value: 
       objectReference: {fileID: 534669904}
+    - target: {fileID: 389174996671887444, guid: a4798bc4278b9f7478c7dd9649cf357c,
+        type: 3}
+      propertyPath: renderer
+      value: 
+      objectReference: {fileID: 288309393}
+    - target: {fileID: 389174996671887444, guid: a4798bc4278b9f7478c7dd9649cf357c,
+        type: 3}
+      propertyPath: controlPointSize
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 389174996671887444, guid: a4798bc4278b9f7478c7dd9649cf357c,
+        type: 3}
+      propertyPath: saveKey
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 389174995492735396, guid: a4798bc4278b9f7478c7dd9649cf357c,
+        type: 3}
+      propertyPath: camera
+      value: 
+      objectReference: {fileID: 534669904}
+    - target: {fileID: 389174995492735396, guid: a4798bc4278b9f7478c7dd9649cf357c,
+        type: 3}
+      propertyPath: textureHolder
+      value: 
+      objectReference: {fileID: 876038652}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a4798bc4278b9f7478c7dd9649cf357c, type: 3}
 --- !u!224 &1742738820949203967
