@@ -47,7 +47,7 @@ public class ImageCalibrator : MonoBehaviour
     {
         Clear();
         rgbMat = new Mat(mat.rows(), mat.cols(), CvType.CV_8UC3);
-        calibrator.Init(mat);
+        calibrator.Init(mat.width(), mat.height());
         texture = new Texture2D(mat.cols(), mat.rows(), TextureFormat.RGB24, false);
     }
 

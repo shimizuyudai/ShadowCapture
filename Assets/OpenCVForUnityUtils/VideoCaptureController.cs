@@ -162,7 +162,7 @@ public partial class VideoCaptureController : TextureHolderBase
             Imgproc.cvtColor(BGRMat, RGBMat, Imgproc.COLOR_BGR2RGB);
             Utils.fastMatToTexture2D(RGBMat, texture);
             shouldUpdateVideoFrame = false;
-            RefreshTexture();
+            OnTextureUpdated(this.texture);
         }
     }
 
@@ -202,11 +202,17 @@ public partial class VideoCaptureController : TextureHolderBase
         if (!capture.isOpened())
         {
             var id = videoCaptureSettings.DeviceId;
-            //for (var i = videoCaptureSettings.DeviceId; i >= 0; i--)
+            capture.open(id, Videoio.CAP_DSHOW);
+
+            //if (!capture.isOpened())
             //{
-            //    capture.open(i, Videoio.CAP_DSHOW);
-            //    if (capture.isOpened()) break;
+            //    for (var i = videoCaptureSettings.DeviceId - 1; i >= 0; i--)
+            //    {
+            //        capture.open(i, Videoio.CAP_DSHOW);
+            //        if (capture.isOpened()) break;
+            //    }
             //}
+
         }
 
         if (!capture.isOpened())
@@ -242,7 +248,7 @@ public partial class VideoCaptureController : TextureHolderBase
         //print(frameHeight);
         texture = new Texture2D(frameWidth, frameHeight, TextureFormat.RGB24, false);
         Refresh();
-        this.SetTexture(texture);
+        this.OnTextureInitialized(texture);
         waitFrameCoroutine = WaitFrameRoutine();
         StartCoroutine(waitFrameCoroutine);
     }

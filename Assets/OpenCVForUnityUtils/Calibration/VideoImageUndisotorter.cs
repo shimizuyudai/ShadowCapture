@@ -45,11 +45,11 @@ public class VideoImageUndisotorter : TextureHolderBase
         mapY = new Mat();
         newCameraMatrix = new Mat();
         LoadSettings();
-        videoCaptureController.InitializedEvent += VideoCaptureController_ChangeTextureEvent;
-        videoCaptureController.UpdatedEvent += VideoCaptureController_RefreshTextureEvent;
+        videoCaptureController.TextureInitializedEvent += VideoCaptureController_ChangeTextureEvent;
+        videoCaptureController.TextureUpdatedEvent += VideoCaptureController_RefreshTextureEvent;
     }
 
-    private void VideoCaptureController_RefreshTextureEvent()
+    private void VideoCaptureController_RefreshTextureEvent(TextureHolderBase sender, Texture texture)
     {
         //Calib3d.undistort(videoCaptureController.RGBMat, rgbMat, cameraMatrix, distCoeffs, newCameraMatrix);
         Refresh();
@@ -95,7 +95,7 @@ public class VideoImageUndisotorter : TextureHolderBase
     /// 補正対象のテクスチャが初期化された際に補正用の設定を初期化する
     /// </summary>
     /// <param name="texture"></param>
-    private void VideoCaptureController_ChangeTextureEvent(Texture texture)
+    private void VideoCaptureController_ChangeTextureEvent(TextureHolderBase sender, Texture texture)
     {
         rgbMat = new Mat(texture.height, texture.width, CvType.CV_8UC3);
         if (this.texture != null)
@@ -123,7 +123,7 @@ public class VideoImageUndisotorter : TextureHolderBase
 
         //
 
-        SetTexture(GetTexture());
+        OnTextureInitialized(GetTexture());
     }
 
     public void OnUpdateIntrinsic(Mat cameraMatrix, Mat distCoeffs)

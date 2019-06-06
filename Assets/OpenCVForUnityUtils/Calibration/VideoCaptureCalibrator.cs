@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using OpenCVForUnity;
-using OpenCVForUnity.VideoioModule;
 using System;
 using OpenCVForUnity.CoreModule;
 using OpenCVForUnity.ImgprocModule;
@@ -24,7 +23,7 @@ public class VideoCaptureCalibrator : MonoBehaviour
     AudioSource audioSource;
 
     [SerializeField]
-    AudioClip countClip, captureClip;
+    AudioClip countSound, calibrationSound, errorSound;
 
     IEnumerator autoCaptureRoutine;
 
@@ -34,18 +33,35 @@ public class VideoCaptureCalibrator : MonoBehaviour
     [SerializeField]
     Calibrator calibrator;
 
-    Texture2D texture;
-    Mat grayMat, rgbMat;
+    Mat grayMat;
 
     [SerializeField]
     string fileName;
 
     private void Awake()
     {
-        videoCaptureController.InitializedEvent += VideoCaptureController_ChangeTextureEvent;
+        videoCaptureController.TextureInitializedEvent += VideoCaptureController_ChangeTextureEvent;
+        calibrator.CalibrationEvent += Calibrator_CalibrationEvent;
+        calibrator.ErrorEvent += Calibrator_ErrorEvent;
     }
 
-    private void VideoCaptureController_ChangeTextureEvent(Texture texture)
+    private void Calibrator_ErrorEvent(string message)
+    {
+        PlaySound(errorSound);
+    }
+
+    private void Calibrator_CalibrationEvent(double repError)
+    {
+        PlaySound(calibrationSound);
+    }
+
+    private void PlaySound(AudioClip audioClip)
+    {
+        return;
+        audioSource.PlayOneShot(audioClip);
+    }
+
+    private void VideoCaptureController_ChangeTextureEvent(TextureHolderBase sender, Texture texture)
     {
         Init();
     }
@@ -53,10 +69,8 @@ public class VideoCaptureCalibrator : MonoBehaviour
     void Init()
     {
         Close();
-        this.texture = new Texture2D(videoCaptureController.BGRMat.cols(), videoCaptureController.BGRMat.rows(), TextureFormat.RGB24, false);
         grayMat = new Mat(videoCaptureController.BGRMat.rows(), videoCaptureController.BGRMat.cols(), CvType.CV_8UC1);
-        rgbMat = new Mat(videoCaptureController.BGRMat.rows(), videoCaptureController.BGRMat.cols(), CvType.CV_8UC3);
-        calibrator.Init(videoCaptureController.BGRMat);
+        calibrator.Init(videoCaptureController.BGRMat.width(), videoCaptureController.BGRMat.height());
     }
 
     private void Close()
@@ -65,16 +79,6 @@ public class VideoCaptureCalibrator : MonoBehaviour
         {
             grayMat.Dispose();
             grayMat = null;
-        }
-        if (rgbMat != null)
-        {
-            rgbMat.Dispose();
-            grayMat = null;
-        }
-        if (texture != null)
-        {
-            DestroyImmediate(texture);
-            texture = null;
         }
     }
 
@@ -86,22 +90,12 @@ public class VideoCaptureCalibrator : MonoBehaviour
 
     public bool Calibrate()
     {
-        //Imgproc.cvtColor(videoCaptureController.BGRMat, grayMat, Imgproc.COLOR_BGR2GRAY);
-        //Imgproc.cvtColor(grayMat, rgbMat, Imgproc.COLOR_GRAY2RGB);
-        var result = false;
         Imgproc.cvtColor(videoCaptureController.BGRMat, grayMat, Imgproc.COLOR_BGR2GRAY);
         Core.flip(grayMat, grayMat, 0);
         var r = calibrator.Calibrate(grayMat);
-
-        result = r >= 0.0;
-        if (result)
-        {
-            audioSource.PlayOneShot(captureClip);
-        }
-        return result;
+        return r >= 0.0;
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
         if (Input.GetKeyDown(calibrateKey))
@@ -150,12 +144,12 @@ public class VideoCaptureCalibrator : MonoBehaviour
             {
                 if (i >= autoCaptureInterval)
                 {
-                    var t = Calibrate();
-                    print("called");
-                    if (t) cnt++;
+                    if (Calibrate())
+                        cnt++;
+
                     break;
                 }
-                audioSource.PlayOneShot(countClip);
+                PlaySound(countSound);
                 yield return new WaitForSeconds(1);
             }
             yield return new WaitForSeconds(1);

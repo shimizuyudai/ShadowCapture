@@ -9,10 +9,11 @@ using OpenCVForUnity.UnityUtils;
 using OpenCVForUnity.Calib3dModule;
 using UtilPack4Unity;
 
-public class Calibrator:MonoBehaviour
+public class Calibrator : MonoBehaviour
 {
     [SerializeField]
-    protected int segmentX, segmentY;
+    public int SizeX, SizeY;
+
     [SerializeField]
     protected float squareSize = 1f;
 
@@ -20,12 +21,16 @@ public class Calibrator:MonoBehaviour
     protected List<Mat> tvecs;
     protected List<Mat> allImgs;
 
-    public event Action<double> CalibrationEvent;
+    
     float width, height;
 
     protected List<Mat> imagePoints;
     protected MatOfDouble distCoeffs;
     protected Mat cameraMatrix;
+
+    public event Action<double> CalibrationEvent;
+    public event Action<string> ErrorEvent;
+    public event Action SavedEvent;
 
     public enum BoardType
     {
@@ -35,7 +40,7 @@ public class Calibrator:MonoBehaviour
     }
 
     [SerializeField]
-    protected BoardType boardType;
+    public BoardType boardType;
 
     private void Awake()
     {
@@ -52,10 +57,10 @@ public class Calibrator:MonoBehaviour
         allImgs = new List<Mat>();
     }
 
-    public virtual void Init(Mat mat)
+    public virtual void Init(int width, int height)
     {
-        width = mat.width();
-        height = mat.height();
+        this.width = width;
+        this.height = height;
         Clear();
         Setup();
     }
@@ -121,6 +126,7 @@ public class Calibrator:MonoBehaviour
     {
         var intrinsicInfo = new IntrinsicInfo(cameraMatrix, distCoeffs, rvecs, tvecs);
         IOHandler.SaveJson(path, intrinsicInfo);
+        SavedEvent?.Invoke();
     }
 
     protected virtual void OnDestroy()
@@ -132,7 +138,7 @@ public class Calibrator:MonoBehaviour
     {
         var repError = -1.0;
         var points = new MatOfPoint2f();
-        var patternSize = new Size((int)segmentX, (int)segmentY);
+        var patternSize = new Size((int)SizeX, (int)SizeY);
 
         var found = false;
         switch (boardType)
@@ -148,7 +154,7 @@ public class Calibrator:MonoBehaviour
                 found = Calib3d.findCirclesGrid(mat, patternSize, points, Calib3d.CALIB_CB_ASYMMETRIC_GRID);
                 break;
         }
-        
+
 
         if (found)
         {
@@ -158,20 +164,20 @@ public class Calibrator:MonoBehaviour
                 Imgproc.cornerSubPix(mat, points, new Size(5, 5), new Size(-1, -1), new TermCriteria(TermCriteria.EPS + TermCriteria.COUNT, 30, 0.1));
             }
             imagePoints.Add(points);
-            //allImgs.Add(mat);
         }
         else
         {
             Debug.Log("Invalid frame.");
-            //mat.Dispose();
             if (points != null)
                 points.Dispose();
+            ErrorEvent?.Invoke("Invalid frame.");
             return repError;
         }
 
         if (imagePoints.Count < 1)
         {
             Debug.Log("Not enough points for calibration.");
+            ErrorEvent?.Invoke("Not enough points for calibration.");
             return repError;
         }
         else
@@ -193,7 +199,6 @@ public class Calibrator:MonoBehaviour
         Debug.Log("repErr: " + repError);
         Debug.Log("camMatrix: " + cameraMatrix.dump());
         Debug.Log("distCoeffs: " + distCoeffs.dump());
-
         return repError;
     }
 
@@ -245,7 +250,7 @@ public class Calibrator:MonoBehaviour
     public virtual void Draw(Mat src, Mat dst)
     {
         var points = new MatOfPoint2f();
-        var patternSize = new Size((int)segmentX, (int)segmentY);
+        var patternSize = new Size((int)SizeX, (int)SizeY);
 
         var found = false;
         switch (boardType)
@@ -266,7 +271,7 @@ public class Calibrator:MonoBehaviour
         {
             if (boardType == BoardType.ChessBoard)
                 Imgproc.cornerSubPix(src, points, new Size(5, 5), new Size(-1, -1), new TermCriteria(TermCriteria.EPS + TermCriteria.COUNT, 30, 0.1));
-            
+
             Calib3d.drawChessboardCorners(dst, patternSize, points, found);
         }
 

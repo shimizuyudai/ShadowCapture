@@ -54,7 +54,7 @@ public class ShadowCaptureSettingsManager : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        shadowCaptureSetting.UpdateEvent += ShadowCaptureSetting_UpdateEvent;
+        shadowCaptureSetting.UpdatedEvent += ShadowCaptureSetting_UpdateEvent;
         SetMode(0);
     }
 

@@ -121,7 +121,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 57172062}
-  - component: {fileID: 57172063}
   - component: {fileID: 57172064}
   - component: {fileID: 57172065}
   - component: {fileID: 57172066}
@@ -146,18 +145,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &57172063
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 57172061}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9059f0ad6979814c8252fb764a53856, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &57172064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -719,6 +706,7 @@ MonoBehaviour:
   correctableQuad: {fileID: 576750247}
   segmentX: 20
   segmentY: 20
+  fitToAngleOfView: 0
 --- !u!114 &576750247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1555,6 +1543,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1078026304010611600, guid: 9d3a53b41635d3b40ab0e54b74e64d0f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4ea64b99a7908aa42bfecdcf7e32a4ad, type: 2}
     - target: {fileID: 1078026304010611606, guid: 9d3a53b41635d3b40ab0e54b74e64d0f,
         type: 3}
       propertyPath: m_LocalPosition.x

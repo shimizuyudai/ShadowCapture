@@ -50,11 +50,11 @@ public class QuadWarpCorrectionController : MonoBehaviour
     private void Awake()
     {
         aspect = Vector2.one;
-        textureHolder.InitializedEvent += TextureHolder_ChangeTextureEvent;
+        textureHolder.TextureInitializedEvent += TextureHolder_ChangeTextureEvent;
         ps.Stop();
     }
 
-    private void TextureHolder_ChangeTextureEvent(Texture texture)
+    private void TextureHolder_ChangeTextureEvent(TextureHolderBase sender, Texture texture)
     {
         Init(new Vector2(texture.width, texture.height));
         renderer.material.mainTexture = texture;
