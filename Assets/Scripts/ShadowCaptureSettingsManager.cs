@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UtilPack4Unity;
+using UnityStandardAssets.ImageEffects;
 
 public class ShadowCaptureSettingsManager : MonoBehaviour
 {
@@ -46,9 +47,7 @@ public class ShadowCaptureSettingsManager : MonoBehaviour
     private bool useBezierWarp;
 
     [SerializeField]
-    RepeatableImageFilter[] blurs;
-    [SerializeField]
-    AverageImageFilter[] averageFilters;
+    Blur shadowBlur, heatmapBlur;
 
     [SerializeField]
     RepeatableImageFilter erode, dilate;
@@ -77,16 +76,12 @@ public class ShadowCaptureSettingsManager : MonoBehaviour
         heatmapFilter.subRate = shadowCaptureSetting.heatmapSubRate;
         flipImageFilter.IsFlipX = shadowCaptureSetting.flipX;
         thresholdImageFilter.threshold = shadowCaptureSetting.threshold;
-        foreach (var blur in blurs)
-        {
-            blur.repeat = shadowCaptureSetting.gaussianBlur;
-        }
-        foreach (var average in averageFilters)
-        {
-            average.repeat = shadowCaptureSetting.average;
-            average.x = shadowCaptureSetting.averageX;
-            average.y = shadowCaptureSetting.averageY;
-        }
+
+        shadowBlur.iterations = shadowCaptureSetting.shadowBlurIterations;
+        heatmapBlur.iterations = shadowCaptureSetting.heatmapBlurIterations;
+        shadowBlur.blurSpread = shadowCaptureSetting.shadowBlurSpread;
+        heatmapBlur.blurSpread = shadowCaptureSetting.heatmapBlurSpread;
+
         erode.repeat = shadowCaptureSetting.erode;
         dilate.repeat = shadowCaptureSetting.dilate;
         if (shadowCaptureSetting.useBezierWarp != this.useBezierWarp)

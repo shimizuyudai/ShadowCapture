@@ -25,12 +25,12 @@ public class ShadowCaptureSetting : EasyUGUISetting
     [Range(0,10)]
     public int dilate;
     [Range(0, 10)]
-    public int gaussianBlur;
+    public int shadowBlurIterations;
+    [Range(0, 2)]
+    public float shadowBlurSpread;
     [Range(0, 10)]
-    public int averageX;
-    [Range(0, 10)]
-    public int averageY;
-    [Range(0, 10)]
-    public int average;
-    
+    public int heatmapBlurIterations;
+    [Range(0, 2)]
+    public float heatmapBlurSpread;
+
 }
