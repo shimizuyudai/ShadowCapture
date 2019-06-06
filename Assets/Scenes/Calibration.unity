@@ -278,6 +278,21 @@ PrefabInstance:
       propertyPath: videoCaptureSettings.Brightness
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8511956679513598320, guid: 3a7b644f9796d67449b3bc87efd773a1,
+        type: 3}
+      propertyPath: videoCaptureSettings.IsControlContrast
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8511956679513598320, guid: 3a7b644f9796d67449b3bc87efd773a1,
+        type: 3}
+      propertyPath: videoCaptureSettings.IsControlExposure
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8511956679513598320, guid: 3a7b644f9796d67449b3bc87efd773a1,
+        type: 3}
+      propertyPath: videoCaptureSettings.Exposure
+      value: -5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3a7b644f9796d67449b3bc87efd773a1, type: 3}
 --- !u!114 &710384048 stripped
@@ -1130,7 +1145,7 @@ PrefabInstance:
     - target: {fileID: 2765144847703173391, guid: 317a6ad13b3cb40439b0a5a7ac18be55,
         type: 3}
       propertyPath: fileName
-      value: cameraCalibrationSetting
+      value: cameraCalibrationSetting.json
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 317a6ad13b3cb40439b0a5a7ac18be55, type: 3}

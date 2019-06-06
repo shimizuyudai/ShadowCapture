@@ -46,10 +46,20 @@ public class ShadowCaptureSettingsManager : MonoBehaviour
     private bool useBezierWarp;
 
     [SerializeField]
+    RepeatableImageFilter[] blurs;
+    [SerializeField]
+    AverageImageFilter[] averageFilters;
+
+    [SerializeField]
+    RepeatableImageFilter erode, dilate;
+
+    [SerializeField]
     KeyCode captureKey;
 
     [SerializeField]
     float delay;
+
+    
 
     // Start is called before the first frame update
     void Awake()
@@ -67,6 +77,18 @@ public class ShadowCaptureSettingsManager : MonoBehaviour
         heatmapFilter.subRate = shadowCaptureSetting.heatmapSubRate;
         flipImageFilter.IsFlipX = shadowCaptureSetting.flipX;
         thresholdImageFilter.threshold = shadowCaptureSetting.threshold;
+        foreach (var blur in blurs)
+        {
+            blur.repeat = shadowCaptureSetting.gaussianBlur;
+        }
+        foreach (var average in averageFilters)
+        {
+            average.repeat = shadowCaptureSetting.average;
+            average.x = shadowCaptureSetting.averageX;
+            average.y = shadowCaptureSetting.averageY;
+        }
+        erode.repeat = shadowCaptureSetting.erode;
+        dilate.repeat = shadowCaptureSetting.dilate;
         if (shadowCaptureSetting.useBezierWarp != this.useBezierWarp)
         {
             OnChangedUseBezierWarp(shadowCaptureSetting.useBezierWarp);

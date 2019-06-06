@@ -1,4 +1,4 @@
-﻿Shader "UtilPack4Unity/Filter/Average"
+﻿Shader "UtilPack4Unity/Filter/AverageImageFilter"
 {
 	Properties
 	{
@@ -40,21 +40,19 @@
 			sampler2D _MainTex;
 			int _Repeat;
 			float4 _MainTex_TexelSize;
+			int _RepeatX;
+			int _RepeatY;
 
 			fixed4 average(sampler2D tex, float4 texelSize, float2 uv)
 			{
-				fixed4 col = tex2D(tex, uv);
-				col += tex2D(tex, uv - texelSize.xy);
-				col += tex2D(tex, uv + texelSize.xy);
-				col += tex2D(tex, uv + (texelSize.x, -texelSize.y));
-				col += tex2D(tex, uv + (-texelSize.x, texelSize.y));
-
-				col += tex2D(tex, uv + (0, -texelSize.y));
-				col += tex2D(tex, uv + (0, texelSize.y));
-				col += tex2D(tex, uv + (-texelSize.x, 0));
-				col += tex2D(tex, uv + (texelSize.x, 0));
-
-				col /= 9.0;
+				fixed4 col = fixed4(0,0,0,1);
+				for (int y = -_RepeatY; y <= _RepeatY; y++) {
+					for (int x = -_RepeatX; x <= _RepeatX; x++) {
+						float2 texCoord = uv + float2(x * texelSize.x, y * texelSize.y);
+						col += tex2D(_MainTex, texCoord);
+					}
+				}
+				col /= (_RepeatX *2 + 1)* (_RepeatY*2 + 1);
 				return col;
 			}
 
